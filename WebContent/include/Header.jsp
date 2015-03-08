@@ -58,10 +58,9 @@
 		        </li>
 	        </ul>			
 			<% } %>
-		</div>	    
+		</div>
+		 
 	  </div>
 	</nav>
 	
-	<div class="container">
-	
-	<!-- container, body and HTML tags are still opened -->
+	<!-- body and HTML tags are still opened -->

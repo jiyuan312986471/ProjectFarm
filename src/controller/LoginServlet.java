@@ -37,11 +37,15 @@ public class LoginServlet extends HttpServlet {
 			if (UserDB.checkLogin(username, password)) {
 				req.getSession().setAttribute("mail", UserDB.getUser(username).getEmail());
 				req.getSession().setAttribute("name", UserDB.getUser(username).getName());
+				req.getRequestDispatcher("/index.jsp").forward(req, resp);
+			}
+			else {
+				JOptionPane.showMessageDialog(null, "Invalid Username or Password");
+				resp.sendRedirect(req.getContextPath() + "/index.jsp");
 			}
 		} catch (DatabaseAccessError e1) {
-			JOptionPane.showMessageDialog(null, "Invalid Username or Password<br>");
+			JOptionPane.showMessageDialog(null, "Invalid Username or Password");
 		}
-		req.getRequestDispatcher("/index.jsp").forward(req, resp);
 	 }
 
 }
