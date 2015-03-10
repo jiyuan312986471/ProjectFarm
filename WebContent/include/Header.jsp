@@ -25,6 +25,11 @@
 
 
 <body>
+
+	<% if( session.getAttribute("messageError") != null ) { %>
+		<div class="alert alert-danger" role="alert"><%= session.getAttribute("messageError") %></div>
+	<% } %>
+	
 	<nav class="navbar navbar-default" role="navigation">
 	  <div class="container-fluid">
 	    <div class="navbar-header">
@@ -47,10 +52,10 @@
 		          </a>
 		          <ul class="dropdown-menu">
 		          	<li>
-		          		<% if( UserDB.getUser(request.getParameter("username")) instanceof Owner ) { %>
-		          			<a href="#">My Projects</a>
-		          		<% } else if ( UserDB.getUser(request.getParameter("username")) instanceof Evaluator ) { %>
-		          			<a href="#">List Projects</a>
+		          		<% if( UserDB.getUser(session.getAttribute("mail").toString()) instanceof Owner ) { %>
+		          			<a href="<%= request.getContextPath()%>/page/MyProjects.jsp">My Projects</a>
+		          		<% } else if ( UserDB.getUser(session.getAttribute("mail").toString()) instanceof Evaluator ) { %>
+		          			<a href="AllProjects">List Projects</a>
 		          		<% } %>
 		          	</li>
 		            <li><a href="<%= request.getContextPath()%>/LogoutServlet">Logout</a></li>

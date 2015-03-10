@@ -2,7 +2,6 @@ package model.db;
 
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 import model.Category;
@@ -17,11 +16,11 @@ public class CategoryDB {
 		initializeCategoryList();
 	}
 	
-	public static List<Category> getCategories() throws DatabaseAccessError {
+	public static LinkedList<Category> getCategories() throws DatabaseAccessError {
 		return new LinkedList<Category>(categories.values());
 	}
 	
-	public Category getCategory(String name) {
+	public static Category getCategory(String name) {
 		return categories.get(name);
 	}
 

@@ -7,7 +7,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.swing.JOptionPane;
 
 import model.db.UserDB;
 import model.db.exception.DatabaseAccessError;
@@ -35,16 +34,18 @@ public class LoginServlet extends HttpServlet {
 		
 		try {
 			if (UserDB.checkLogin(username, password)) {
+				req.getSession().removeAttribute("messageError");
 				req.getSession().setAttribute("mail", UserDB.getUser(username).getEmail());
 				req.getSession().setAttribute("name", UserDB.getUser(username).getName());
-				req.getRequestDispatcher("/index.jsp").forward(req, resp);
+				req.getSession().setAttribute("User", UserDB.getOwner(username));
 			}
 			else {
-				JOptionPane.showMessageDialog(null, "Invalid Username or Password");
-				resp.sendRedirect(req.getContextPath() + "/index.jsp");
+				req.getSession().setAttribute("messageError", "Invalid Username or Password");
 			}
 		} catch (DatabaseAccessError e1) {
-			JOptionPane.showMessageDialog(null, "Invalid Username or Password");
+			req.getSession().setAttribute("messageError", "Invalid Username or Password");
+		} finally {
+		req.getRequestDispatcher("/index.jsp").forward(req, resp);
 		}
 	 }
 

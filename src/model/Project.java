@@ -14,18 +14,18 @@ public class Project implements Serializable {
 	private String acronym;
 	private String description;
 	private int fundingDuration;
-	private double budget;
+	private int budget;
 	private Date created;
 	private Owner owner;
 	private Category category;
 	private List<Evaluation> evaluations;
 	private List<Document> documents;
 
-	public Project(String acronym, String description, int fundingDuration,
-			double budget, Owner owner, Category category) throws InvalidDataException {
+	public Project(String acronym, String description, //int fundingDuration,
+			int budget, Owner owner, Category category) throws InvalidDataException {
 		setAcronym(acronym);
 		setDescription(description);
-		setFundingDuration(fundingDuration);
+		//setFundingDuration(fundingDuration);
 		setBudget(budget);
 		setCreated(new Date());
 		setOwner(owner);
@@ -75,11 +75,11 @@ public class Project implements Serializable {
 		this.fundingDuration = fundingDuration;
 	}
 
-	public double getBudget() {
+	public int getBudget() {
 		return budget;
 	}
 
-	public void setBudget(double budget) throws InvalidDataException {
+	public void setBudget(int budget) throws InvalidDataException {
 		if(budget <= 0) {
 			throw new InvalidDataException("budget must be specified");
 		}				
