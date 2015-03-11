@@ -26,10 +26,6 @@
 
 <body>
 
-	<% if( session.getAttribute("messageError") != null ) { %>
-		<div class="alert alert-danger" role="alert"><%= session.getAttribute("messageError") %></div>
-	<% } %>
-	
 	<nav class="navbar navbar-default" role="navigation">
 	  <div class="container-fluid">
 	    <div class="navbar-header">
@@ -67,5 +63,11 @@
 		 
 	  </div>
 	</nav>
+	
+	<div class="row">
+		<% if( session.getAttribute("messageError") != null ) { %>
+			<div class="alert alert-danger col-sm-6 col-md-offset-3" role="alert"><strong>Error! <%= session.getAttribute("messageError") %></strong></div>
+		<% } %>
+	</div>
 	
 	<!-- body and HTML tags are still opened -->

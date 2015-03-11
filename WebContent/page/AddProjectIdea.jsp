@@ -24,13 +24,13 @@
 				  <div class="form-group">
 				    <label for="inputTitle" class="col-sm-2 control-label">Title: </label>
 				    <div class="col-sm-4">
-				      <input type="text" class="form-control" id="inputTitle" placeholder="Project Title" name="projectTitle">
+				      <input type="text" class="form-control" id="inputTitle" placeholder="Project Title" name="projectTitle" value="<%=request.getParameter("projectTitle")==null?"":request.getParameter("projectTitle")%>">
 				    </div>
 				  </div>
 				  <div class="form-group">
 				    <label for="inputDescription" class="col-sm-2 control-label">Description: </label>
 				    <div class="col-sm-10">
-				    	<textarea style="overflow:scroll; overflow-x:hidden;" class="form-control" id="inputDescription" placeholder="Project Description" rows="3" name="projectDescription"></textarea>
+				    	<textarea style="overflow:scroll; overflow-x:hidden;" class="form-control" id="inputDescription" placeholder="Project Description" rows="3" name="projectDescription"><%=request.getParameter("projectDescription")==null?"":request.getParameter("projectDescription")%></textarea>
 				    </div>
 				  </div>
 	         </div>
@@ -43,14 +43,18 @@
 				    <div class="col-sm-3">
 				    	<select class="form-control" id="inputCategory" name="projectCategory">
 				    	<% for(Category category: listCategory) { %>
-				    		<option><%= category.getDescription() %></option>
+				    		<option
+				    			<% if( category.getDescription().trim().equals(request.getParameter("projectCategory")) ) { %>
+				    				selected="selected"
+				    			<% } %>				    		
+				    		><%= category.getDescription() %></option>
 				    	<% } %>
 						</select>
 				    </div>
 				    <label for="inputBudget" class="col-sm-2 control-label">Budget:</label>
 				    <div class="col-sm-4">
 						<div class="input-group">
-						    <input type="text" class="form-control text-right" id="inputBudget" placeholder="Budget" name="projectBudget">
+						    <input type="text" class="form-control text-right" id="inputBudget" placeholder="Budget" name="projectBudget" value="<%=request.getParameter("projectBudget")==null?"":request.getParameter("projectBudget")%>">
 						    <div class="input-group-addon">.00</div>
 						    <div class="input-group-addon">€</div>
 						</div>
