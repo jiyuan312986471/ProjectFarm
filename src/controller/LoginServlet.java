@@ -26,11 +26,28 @@ public class LoginServlet extends HttpServlet {
 		super.destroy();
 		}
 	
+	// get previous page relative URL
+	private String getPreviousRelativeURL(String url, HttpServletRequest req) {
+		String previousRelativeURL;
+		String regex = req.getContextPath().trim();
+		String[] list = url.split(regex);
+		previousRelativeURL = list[list.length - 1];
+		return previousRelativeURL;
+	}
+	
+	
 	// Servlet service
 	protected void service(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		String username = req.getParameter("username");
 		String password = req.getParameter("password");
+		String url = req.getHeader("referer");
+		
+		// error message setting
+		String messageError = "Invalid Username or Password";
+		
+		// get previous page relative URL
+		String previousRelativeURL = this.getPreviousRelativeURL(url, req);
 		
 		try {
 			if (UserDB.checkLogin(username, password)) {
@@ -40,12 +57,12 @@ public class LoginServlet extends HttpServlet {
 				req.getSession().setAttribute("User", UserDB.getOwner(username));
 			}
 			else {
-				req.getSession().setAttribute("messageError", "Invalid Username or Password");
+				req.getSession().setAttribute("messageError", messageError);
 			}
 		} catch (DatabaseAccessError e1) {
-			req.getSession().setAttribute("messageError", "Invalid Username or Password");
+			req.getSession().setAttribute("messageError", messageError);
 		} finally {
-		req.getRequestDispatcher("/index.jsp").forward(req, resp);
+			req.getRequestDispatcher(previousRelativeURL).forward(req, resp);
 		}
 	 }
 
