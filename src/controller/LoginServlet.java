@@ -28,11 +28,8 @@ public class LoginServlet extends HttpServlet {
 	
 	// get previous page relative URL
 	private String getPreviousRelativeURL(String url, HttpServletRequest req) {
-		String previousRelativeURL;
-		String regex = req.getContextPath().trim();
-		String[] list = url.split(regex);
-		previousRelativeURL = list[list.length - 1];
-		return previousRelativeURL;
+		String[] list = url.split(req.getContextPath().trim());
+		return list[list.length - 1];
 	}
 	
 	
@@ -41,13 +38,13 @@ public class LoginServlet extends HttpServlet {
 			throws ServletException, IOException {
 		String username = req.getParameter("username");
 		String password = req.getParameter("password");
-		String url = req.getHeader("referer");
+		String previousURL = req.getHeader("referer");
 		
 		// error message setting
 		String messageError = "Invalid Username or Password";
 		
 		// get previous page relative URL
-		String previousRelativeURL = this.getPreviousRelativeURL(url, req);
+		String previousRelativeURL = this.getPreviousRelativeURL(previousURL, req);
 		
 		try {
 			if (UserDB.checkLogin(username, password)) {
