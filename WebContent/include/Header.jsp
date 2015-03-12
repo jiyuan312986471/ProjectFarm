@@ -28,39 +28,44 @@
 
 	<nav class="navbar navbar-default" role="navigation">
 	  <div class="container-fluid">
-	    <div class="navbar-header">
-	      <a class="navbar-brand" href="<%= request.getContextPath()%>/index.jsp"><%= request.getParameter("title") %></a>
-	    </div>
-		
-	    <div>
-	      	<% if(session.getAttribute("name") == null) { %>
-			<form class="navbar-form form-inline pull-right"  action="<%= request.getContextPath()%>/LoginServlet">
-	    		<input type="text" placeholder="User name" name="username">
-	    		<input type="password" placeholder="Password" name="password">
-	    		<input type="hidden" name="pageSuccess"  value='<%= request.getParameter("page")%>'/>
-	    		<button type="submit" class="btn">Sign in</button>
-			</form>
-			<% } else { %>
-			<ul class="nav navbar-nav navbar-right">
-				<li class="dropdown">
-		          <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-		          	<span class="glyphicon glyphicon-user"></span> <%= session.getAttribute("name") %>
-		          </a>
-		          <ul class="dropdown-menu">
-		          	<li>
-		          		<% if( UserDB.getUser(session.getAttribute("mail").toString()) instanceof Owner ) { %>
-		          			<a href="<%= request.getContextPath()%>/page/MyProjects.jsp">My Projects</a>
-		          		<% } else if ( UserDB.getUser(session.getAttribute("mail").toString()) instanceof Evaluator ) { %>
-		          			<a href="AllProjects">List Projects</a>
-		          		<% } %>
-		          	</li>
-		            <li><a href="<%= request.getContextPath()%>/LogoutServlet">Logout</a></li>
-		          </ul>
-		        </li>
-	        </ul>			
-			<% } %>
-		</div>
-		 
+	  	<div class="row">
+		  	<div class="col-md-8 col-md-offset-2">
+			  	
+			    <div class="navbar-header">
+			      <a class="navbar-brand" href="<%= request.getContextPath()%>/index.jsp"><%= request.getParameter("title") %></a>
+			    </div>
+				
+			    <div>
+			      	<% if(session.getAttribute("name") == null) { %>
+					<form class="navbar-form form-inline pull-right"  action="<%= request.getContextPath()%>/LoginServlet">
+			    		<input type="text" placeholder="User name" name="username">
+			    		<input type="password" placeholder="Password" name="password">
+			    		<input type="hidden" name="pageSuccess"  value='<%= request.getParameter("page")%>'/>
+			    		<button type="submit" class="btn">Sign in</button>
+					</form>
+					<% } else { %>
+					<ul class="nav navbar-nav navbar-right">
+						<li class="dropdown">
+				          <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+				          	<span class="glyphicon glyphicon-user"></span> <%= session.getAttribute("name") %>
+				          </a>
+				          <ul class="dropdown-menu">
+				          	<li>
+				          		<% if( UserDB.getUser(session.getAttribute("mail").toString()) instanceof Owner ) { %>
+				          			<a href="<%= request.getContextPath()%>/page/MyProjects.jsp">My Projects</a>
+				          		<% } else if ( UserDB.getUser(session.getAttribute("mail").toString()) instanceof Evaluator ) { %>
+				          			<a href="AllProjects">List Projects</a>
+				          		<% } %>
+				          	</li>
+				            <li><a href="<%= request.getContextPath()%>/LogoutServlet">Logout</a></li>
+				          </ul>
+				        </li>
+			        </ul>			
+					<% } %>
+				</div>
+			 
+			</div>
+		 </div>
 	  </div>
 	</nav>
 	
