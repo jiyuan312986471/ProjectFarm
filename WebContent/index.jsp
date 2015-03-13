@@ -9,7 +9,7 @@
 
 <div class="container">
 
-	<div class="jumbotron">
+	<div class="jumbotron"  style="filter:alpha(Opacity=85); -moz-opacity:0.85; opacity:0.85; background-color:black; color:white;">
 		<h1>Project Farm</h1>
 		<h2>Project ideas are seeds to change the world</h2></br></br>
 		<p>

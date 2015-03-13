@@ -13,7 +13,7 @@
 
 <div class="container">
 
-	<div class="modal-content">
+	<div class="modal-content" style="filter:alpha(Opacity=95); -moz-opacity:0.95; opacity:0.95; background-color:black; color:white;">
 	
          <div class="modal-header">
             <h4 class="modal-title" id="myModalLabel">New Project Idea</h4>

@@ -30,6 +30,35 @@ public class AddProjectIdeaServlet extends HttpServlet {
 		super.destroy();
 		}
 	
+	// project title check
+	private boolean isValidProjectTitle(String projTitle) {
+		if ( projTitle.equals("") || projTitle == null )
+			return false;
+		else
+			return true;
+	}
+	
+	// project description check
+	private boolean isValidProjectDescription(String projDescription) {
+		if ( projDescription.equals("") || projDescription == null )
+			return false;
+		else
+			return true;
+	}
+	
+	// project budget check
+	private boolean isValidProjectBudget(String projBudget) {
+		if ( projBudget.equals("") || projBudget == null ) {
+			return false;
+		} else {
+			try {
+				Integer.parseUnsignedInt(projBudget);
+			} catch (NumberFormatException e) {
+				return false;
+			}
+			return true;
+		}
+	}
 	
 	// Servlet Service
 	protected void service(HttpServletRequest req, HttpServletResponse resp)
@@ -40,35 +69,28 @@ public class AddProjectIdeaServlet extends HttpServlet {
 		Category projCategory = CategoryDB.getCategory(req.getParameter("projectCategory"));
 		String projBudget = req.getParameter("projectBudget");
 		Owner projOwner = (Owner) req.getSession().getAttribute("User");
-		int budget = 0;
 		
 		// error message setting
 		String errorBudget = "Invalid Budget";
 		String errorTitle = "The project needs a title";
 		String errorDescription = "The project needs a description";
 		
-        // title and description validation check
-        if ( projTitle.equals("") || projTitle == null ) {
+        // title check
+        if ( !isValidProjectTitle(projTitle) ) {
         	req.getSession().setAttribute("messageError", errorTitle);
 			req.getRequestDispatcher("/page/AddProjectIdea.jsp").forward(req, resp);
-        } else {
-        	if ( projDescription.equals("") || projDescription == null ) {
-            	req.getSession().setAttribute("messageError", errorDescription);
-    			req.getRequestDispatcher("/page/AddProjectIdea.jsp").forward(req, resp);
-            }
         }
         
-		// budget validation check
-        if ( projBudget.equals("") || projBudget == null ) {
+        // description check
+        if ( !isValidProjectDescription(projDescription) ) {
+            req.getSession().setAttribute("messageError", errorDescription);
+    		req.getRequestDispatcher("/page/AddProjectIdea.jsp").forward(req, resp);
+        }
+        
+		// budget check
+        if ( !isValidProjectBudget(projBudget) ) {
         	req.getSession().setAttribute("messageError", errorBudget);
 			req.getRequestDispatcher("/page/AddProjectIdea.jsp").forward(req, resp);
-        } else {
-        	try {
-				budget = Integer.parseUnsignedInt(projBudget);
-			} catch (NumberFormatException e) {
-				req.getSession().setAttribute("messageError", errorBudget);
-				req.getRequestDispatcher("/page/AddProjectIdea.jsp").forward(req, resp);
-			}
         }
         
         
@@ -80,6 +102,7 @@ public class AddProjectIdeaServlet extends HttpServlet {
         req.getSession().removeAttribute("messageError");
         
         // generate project
+        int budget = Integer.parseUnsignedInt(projBudget);
         Project proj = null;
         try {
         	proj = new Project(projTitle, projDescription, budget, projOwner, projCategory);

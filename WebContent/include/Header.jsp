@@ -24,12 +24,12 @@
 </head>
 
 
-<body>
+<body background="<%= request.getContextPath()%>/image/background.jpeg" style="background-repeat:no-repeat; background-size:cover;">
 
-	<nav class="navbar navbar-default" role="navigation">
+	<nav class="navbar navbar-default navbar-inverse" role="navigation">
 	  <div class="container-fluid">
-	  	<div class="row">
-		  	<div class="col-md-8 col-md-offset-2">
+	  	<!-- <div class="row">
+		  	<div class="col-md-8 col-md-offset-2"> -->
 			  	
 			    <div class="navbar-header">
 			      <a class="navbar-brand" href="<%= request.getContextPath()%>/index.jsp"><%= request.getParameter("title") %></a>
@@ -37,7 +37,7 @@
 				
 			    <div>
 			      	<% if(session.getAttribute("name") == null) { %>
-					<form class="navbar-form form-inline pull-right"  action="<%= request.getContextPath()%>/LoginServlet">
+					<form class="navbar-form form-inline pull-right"  action="<%= request.getContextPath()%>/LoginServlet" method="post">
 			    		<input type="text" placeholder="User name" name="username">
 			    		<input type="password" placeholder="Password" name="password">
 			    		<input type="hidden" name="pageSuccess"  value='<%= request.getParameter("page")%>'/>
@@ -64,8 +64,8 @@
 					<% } %>
 				</div>
 			 
-			</div>
-		 </div>
+			<!-- </div>
+		 </div> -->
 	  </div>
 	</nav>
 	

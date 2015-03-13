@@ -26,11 +26,11 @@ public class LoginServlet extends HttpServlet {
 		super.destroy();
 		}
 	
-	// get previous page relative URL
-	private String getPreviousRelativeURL(String url, HttpServletRequest req) {
-		String[] list = url.split(req.getContextPath().trim());
-		return list[list.length - 1];
-	}
+//	// get previous page relative URL
+//	private String getPreviousRelativeURL(String url, HttpServletRequest req) {
+//		String[] list = url.split(req.getContextPath().trim());
+//		return list[list.length - 1];
+//	}
 	
 	
 	// Servlet service
@@ -43,11 +43,11 @@ public class LoginServlet extends HttpServlet {
 		// error message setting
 		String messageError = "Invalid Username or Password";
 		
-		// get previous page relative URL
-		String previousRelativeURL = this.getPreviousRelativeURL(previousURL, req);
+//		// get previous page relative URL
+//		String previousRelativeURL = this.getPreviousRelativeURL(previousURL, req);
 		
 		try {
-			if (UserDB.checkLogin(username, password)) {
+			if ( UserDB.checkLogin(username, password) ) {
 				req.getSession().removeAttribute("messageError");
 				req.getSession().setAttribute("mail", UserDB.getUser(username).getEmail());
 				req.getSession().setAttribute("name", UserDB.getUser(username).getName());
@@ -59,7 +59,8 @@ public class LoginServlet extends HttpServlet {
 		} catch (DatabaseAccessError e1) {
 			req.getSession().setAttribute("messageError", messageError);
 		} finally {
-			req.getRequestDispatcher(previousRelativeURL).forward(req, resp);
+			//req.getRequestDispatcher(previousRelativeURL).forward(req, resp);
+			resp.sendRedirect(previousURL);
 		}
 	 }
 

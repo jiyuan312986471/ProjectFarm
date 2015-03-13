@@ -1,21 +1,24 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
-<hr>
 
-<div class="container">
-	<footer class="footer">
-		<p class="pull-right">
-			<a href="#" id="backToTop">
-				Back to top
-				<span class="glyphicon glyphicon-collapse-up" aria-hidden="true"></span>
-			</a>
-		</p>
-		<p>
-			<span class="glyphicon glyphicon-copyright-mark" aria-hidden="true"></span>
-			Made by Ji Yuan
-		</p>
-	</footer>
-</div>
+
+<nav class="navbar navbar-default navbar-fixed-bottom navbar-inverse">
+	<div class="container">
+		<footer class="footer">
+			<p class="pull-right" style="padding: 10px;">
+				<a href="#" id="backToTop">
+					Back to top
+					<span class="glyphicon glyphicon-chevron-up"></span>
+				</a>
+			</p>
+			<p class="text-muted" style="padding: 10px;">
+				<span class="glyphicon glyphicon-copyright-mark"></span>
+				Made by Ji Yuan
+			</p>
+		</footer>
+	</div>
+</nav>
+
 
 </body>
 </html>
