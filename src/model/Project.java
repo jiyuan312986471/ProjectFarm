@@ -17,7 +17,7 @@ public class Project implements Serializable {
 	private int budget;
 	private Date created;
 	private Owner owner;
-	private Category category;
+	private String category;
 	private List<Evaluation> evaluations;
 	private List<Document> documents;
 
@@ -105,7 +105,7 @@ public class Project implements Serializable {
 		this.owner = owner;
 	}
 
-	public Category getCategory() {
+	public String getCategory() {
 		return category;
 	}
 
@@ -113,7 +113,7 @@ public class Project implements Serializable {
 		if(category == null) {
 			throw new InvalidDataException("Project must have a category");
 		}				
-		this.category = category;
+		this.category = category.getDescription();
 	}
 
 	public void addEvaluation(Evaluation eval) {

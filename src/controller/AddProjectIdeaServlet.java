@@ -113,7 +113,7 @@ public class AddProjectIdeaServlet extends HttpServlet {
         
         // save project to DB
         try {
-			ProjectDB.saveProject(proj);
+			ProjectDB.add(proj);
 		} catch (DatabaseAccessError e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
