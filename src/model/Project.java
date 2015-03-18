@@ -22,7 +22,7 @@ public class Project implements Serializable {
 	private List<Document> documents;
 
 	public Project(String acronym, String description, //int fundingDuration,
-			int budget, Owner owner, Category category) throws InvalidDataException {
+			int budget, Owner owner, Category category) {
 		setAcronym(acronym);
 		setDescription(description);
 		//setFundingDuration(fundingDuration);
@@ -46,10 +46,7 @@ public class Project implements Serializable {
 		return acronym;
 	}
 
-	public void setAcronym(String acronym) throws InvalidDataException {
-		if(acronym == null || acronym.trim().equals("")) {
-			throw new InvalidDataException("Acronym is mandatory");
-		}
+	public void setAcronym(String acronym) {
 		this.acronym = acronym;
 	}
 
@@ -57,10 +54,7 @@ public class Project implements Serializable {
 		return description;
 	}
 
-	public void setDescription(String description) throws InvalidDataException {
-		if(description == null || description.trim().equals("")) {
-			throw new InvalidDataException("Description is mandatory");
-		}		
+	public void setDescription(String description) {
 		this.description = description;
 	}
 
@@ -79,10 +73,7 @@ public class Project implements Serializable {
 		return budget;
 	}
 
-	public void setBudget(int budget) throws InvalidDataException {
-		if(budget <= 0) {
-			throw new InvalidDataException("budget must be specified");
-		}				
+	public void setBudget(int budget) {
 		this.budget = budget;
 	}
 
@@ -98,10 +89,7 @@ public class Project implements Serializable {
 		return owner;
 	}
 
-	public void setOwner(Owner owner) throws InvalidDataException {
-		if(owner == null) {
-			throw new InvalidDataException("Project must have an owner");
-		}				
+	public void setOwner(Owner owner) {
 		this.owner = owner;
 	}
 
@@ -109,10 +97,7 @@ public class Project implements Serializable {
 		return category;
 	}
 
-	public void setCategory(Category category) throws InvalidDataException {
-		if(category == null) {
-			throw new InvalidDataException("Project must have a category");
-		}				
+	public void setCategory(Category category) {
 		this.category = category.getDescription();
 	}
 

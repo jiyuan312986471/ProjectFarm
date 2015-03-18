@@ -28,8 +28,6 @@
 
 	<nav class="navbar navbar-default navbar-inverse" role="navigation">
 	  <div class="container-fluid">
-	  	<!-- <div class="row">
-		  	<div class="col-md-8 col-md-offset-2"> -->
 			  	
 			    <div class="navbar-header">
 			      <a class="navbar-brand" href="<%= request.getContextPath()%>/index.jsp"><%= request.getParameter("title") %></a>
@@ -63,9 +61,7 @@
 			        </ul>			
 					<% } %>
 				</div>
-			 
-			<!-- </div>
-		 </div> -->
+
 	  </div>
 	</nav>
 	

@@ -6,6 +6,7 @@ package model.db;
 //import java.util.Map;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -17,7 +18,7 @@ import model.db.exception.DatabaseAccessError;
 
 public class ProjectDB {
 
-	private static String ADD = "INSERT into project (acronym, description, category, budget) values (?,?,?)";
+	private static String ADD = "INSERT into project (acronym, description, fundingDurationDays, budget, created, emailOwner, category) values (?,?,?,?,?,?,?)";
 	
 	public static void add(Project proj) throws DatabaseAccessError {
 		
@@ -27,26 +28,31 @@ public class ProjectDB {
 			// connection
 			con = DBUtil.getConnection();
 			
+			// get date
+			java.sql.Date date = new Date( new java.util.Date().getTime() );
+			
 			// statement
 			PreparedStatement stmt = con.prepareStatement(ADD, Statement.RETURN_GENERATED_KEYS);
-			stmt.setString(2, proj.getAcronym());
-			stmt.setString(3, proj.getDescription());
-			stmt.setString(8, proj.getCategory());
-			stmt.setInt(5, proj.getBudget());
+			stmt.setString(1, proj.getAcronym());
+			stmt.setString(2, proj.getDescription());
+			stmt.setInt(3, 0);
+			stmt.setInt(4, proj.getBudget());
+			stmt.setDate(5, date);
+			stmt.setString(6, proj.getOwner().getEmail());
+			stmt.setString(7, proj.getCategory());
 
 			int lines = stmt.executeUpdate();
 
 			if (lines != 1)
 				throw new DatabaseAccessError("Invalid quantity of returned lines");
 
-//			ResultSet key = stmt.getGeneratedKeys();
-//
-//			if (key.next())
-//				proc.setId(key.getInt(1));
-
 			stmt.close();
-		} catch (ClassNotFoundException | SQLException | NamingException e) {
-			throw new DatabaseAccessError("General error", e);
+		} catch (ClassNotFoundException e) {
+			throw new DatabaseAccessError("Class not found", e);
+		} catch (SQLException e) {
+			throw new DatabaseAccessError("SQL exception", e);
+		} catch (NamingException e) {
+			throw new DatabaseAccessError("Naming exception", e);
 		} finally {
 			try {
 				DBUtil.dropConnection(con);
@@ -54,38 +60,6 @@ public class ProjectDB {
 				e.printStackTrace();
 			}
 		}
-		
 	}
-	
-//	private static Map<String, Project> projects;
-//
-//	static {
-//		projects = new LinkedHashMap<String, Project>();
-//	}
-//
-//	public static void saveProject(Project project) throws DatabaseAccessError {
-//		projects.put(project.getAcronym(), project);
-//	}
-//
-//	public static Project getProject(String acronym) throws DatabaseAccessError {
-//		return projects.get(acronym);
-//	}
-//
-//	public static List<Project> getProjectsOfOwner(Owner owner) throws DatabaseAccessError {
-//
-//		List<Project> projectsOfOwner = new LinkedList<Project>();
-//
-//		for (Project p : projects.values()) {
-//			if (p.getOwner().equals(owner)) {
-//				projectsOfOwner.add(p);
-//			}
-//		}
-//		return projectsOfOwner;
-//
-//	}
-//	
-//	public static List<Project> getAllProjects() throws DatabaseAccessError {
-//		return new LinkedList<Project>(projects.values());
-//	}
 	
 }

@@ -14,7 +14,6 @@ import model.Project;
 import model.db.CategoryDB;
 import model.db.ProjectDB;
 import model.db.exception.DatabaseAccessError;
-import model.exception.InvalidDataException;
 
 
 @WebServlet("/AddProjectIdeaServlet")
@@ -103,14 +102,8 @@ public class AddProjectIdeaServlet extends HttpServlet {
         
         // generate project
         int budget = Integer.parseUnsignedInt(projBudget);
-        Project proj = null;
-        try {
-        	proj = new Project(projTitle, projDescription, budget, projOwner, projCategory);
-		} catch (InvalidDataException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        
+        Project proj = new Project(projTitle, projDescription, budget, projOwner, projCategory);
+
         // save project to DB
         try {
 			ProjectDB.add(proj);

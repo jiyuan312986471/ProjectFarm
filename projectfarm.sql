@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 2015-03-14 16:16:16
+-- Generation Time: 2015-03-18 14:08:33
 -- 服务器版本： 5.6.15-log
 -- PHP Version: 5.5.8
 
@@ -63,6 +63,20 @@ CREATE TABLE IF NOT EXISTS `evaluation` (
 -- --------------------------------------------------------
 
 --
+-- 表的结构 `person`
+--
+
+CREATE TABLE IF NOT EXISTS `person` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `ssn` int(11) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `photo` longblob,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
 -- 表的结构 `project`
 --
 
@@ -71,12 +85,19 @@ CREATE TABLE IF NOT EXISTS `project` (
   `acronym` varchar(100) NOT NULL,
   `description` varchar(2000) NOT NULL,
   `fundingDurationDays` int(11) NOT NULL,
-  `budget` double NOT NULL,
+  `budget` int(11) NOT NULL,
   `created` date NOT NULL,
   `emailOwner` varchar(100) NOT NULL,
   `category` varchar(20) NOT NULL,
   PRIMARY KEY (`idProject`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+--
+-- 转存表中的数据 `project`
+--
+
+INSERT INTO `project` (`idProject`, `acronym`, `description`, `fundingDurationDays`, `budget`, `created`, `emailOwner`, `category`) VALUES
+(1, 'test', 'test 2015.03.17 23:55', 0, 100, '2015-03-17', 'john@acme.com', 'Information Systems');
 
 -- --------------------------------------------------------
 
@@ -92,6 +113,18 @@ CREATE TABLE IF NOT EXISTS `user` (
   PRIMARY KEY (`email`),
   UNIQUE KEY `email` (`email`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- 转存表中的数据 `user`
+--
+
+INSERT INTO `user` (`email`, `name`, `password`, `userType`) VALUES
+('john@acme.com', 'John Silver', '123', 0),
+('mary@acme.com', 'Mary Moon', '123', 0),
+('paul@acme.com', 'Paul McDonalds', '123', 0),
+('sarah@geek.com', 'Sarah Logan', '456', 0),
+('thibault@geek.com', 'Thibault Moulin', '456', 0),
+('george@geek.com', 'George Papalodeminus', '456', 0);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
