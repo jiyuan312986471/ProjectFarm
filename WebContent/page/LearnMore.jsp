@@ -7,7 +7,7 @@
 
 <div class="container">
 
-	<div class="jumbotron">
+	<div class="jumbotron" style="filter:alpha(Opacity=85); -moz-opacity:0.85; opacity:0.85; background-color:black; color:white;">
 		<h1>Project Farm</h1>
 		<p>
 			<p>Simplified version of KickStarter project aiming at helping people to get funding for project ideas in several fields.</p></br></br>

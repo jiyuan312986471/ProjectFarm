@@ -13,38 +13,73 @@
          <div class="modal-header">
             <h4 class="modal-title" id="myModalLabel">Project Details</h4>
          </div>
-         
-	     <div class="modal-body">
-		 	<!-- <label for="inputTitle" class="col-sm-2 control-label">Title: </label> -->
-		 	<label class="control-label">Project Evaluation</label>
-			<div class="col-sm-4">
-			</div>
 
-			<label for="inputDescription" class="col-sm-2 control-label">Description: </label>
-			<div class="col-sm-10">
-				<textarea style="overflow:scroll; overflow-x:hidden;" class="form-control" id="inputDescription" placeholder="Project Description" rows="3" name="projectDescription"><%=request.getParameter("projectDescription")==null?"":request.getParameter("projectDescription")%></textarea>
+		 <div class="modal-body">
+		 	<div class="row">
+		 		<label class="col-sm-2">Project Evaluation</label>
+		 	</div>
+			
+			<div class="row">
+				<label class="col-sm-1 col-sm-offset-1">Acronym: </label>
+				<label class="col-sm-1">Value</label>
+				<label class="col-sm-1 col-sm-offset-1">Created: </label>
+				<label class="col-sm-1">Value</label>
 			</div>
-		</div>
-	         
-	    <hr>
-	         
-	    <div class="modal-body">
-			<div class="form-group">
-				<label for="inputCategory" class="col-sm-2 control-label">Category:</label>
+				
+			<div class="row">
+				<label class="col-sm-1 col-sm-offset-1">Description: </label>
+				<label class="col-sm-9">Value</label>
+			</div>
+			
+			<div class="row">
+				<label class="col-sm-1 col-sm-offset-1">Category: </label>
+				<label class="col-sm-1">Value</label>
+				<label class="col-sm-1 col-md-offset-1">Budget:</label>
 				<div class="col-sm-3">
-					<select class="form-control" id="inputCategory" name="projectCategory">
-					</select>
-				</div>
-				<label for="inputBudget" class="col-sm-2 control-label">Budget:</label>
-				<div class="col-sm-4">
 					<div class="input-group">
-						<input type="text" class="form-control text-right" id="inputBudget" placeholder="Budget" name="projectBudget" value="<%=request.getParameter("projectBudget")==null?"":request.getParameter("projectBudget")%>">
+						<input type="text" class="form-control text-left" id="disabledInput" placeholder="Budget" value="" disabled>
 						<div class="input-group-addon">.00</div>
 						<div class="input-group-addon">€</div>
 					</div>
 				</div>
 			</div>
-	    </div>
+		</div>
+		         
+		<hr>
+		         
+		<div class="modal-body">
+			<div class="row">
+		 		<label class="col-sm-2">Documents</label>
+		 	</div>
+		
+			<div class="row">
+				<div class="col-sm-offset-7"><button type="button" class="btn btn-default">upload</button></div>
+			</div>
+			
+		</div>
+		
+		<hr>
+		
+		<div class="modal-body">
+			<div class="row">
+				<label class="col-sm-2">Statistics</label>
+			</div>
+			
+			<div class="row">
+				<label class="col-sm-3 col-sm-offset-1">Risk Level: </label>
+				<label class="col-sm-1">Value</label>
+			</div>
+			
+			<div class="row">
+				<label class="col-sm-3 col-sm-offset-1">Attractiveness: </label>
+				<label class="col-sm-1">Value</label>
+			</div>
+			
+			<div class="row">
+				<label class="col-sm-3 col-sm-offset-1">Number of Evaluations: </label>
+				<label class="col-sm-1">Value</label>
+			</div>
+		</div>
          
 	    <div class="modal-footer">
 	    	<button type="submit" class="btn btn-primary">Save</button>

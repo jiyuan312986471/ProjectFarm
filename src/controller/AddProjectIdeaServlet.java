@@ -113,7 +113,7 @@ public class AddProjectIdeaServlet extends HttpServlet {
 		}
         
 		// turn to page ProjectDetails.jsp
-		resp.sendRedirect("/page/ProjectDetails.jsp");
+		resp.sendRedirect("ProjectDetails.jsp");
 	}
 	
 }
