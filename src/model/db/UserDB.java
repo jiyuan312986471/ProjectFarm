@@ -1,7 +1,13 @@
 package model.db;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.LinkedHashMap;
 import java.util.Map;
+
+import javax.naming.NamingException;
 
 import model.Evaluator;
 import model.Owner;
@@ -11,6 +17,7 @@ import model.db.exception.DatabaseAccessError;
 public class UserDB {
 	
 	private static Map<String,User> users;
+	private static String QUERY = "SELECT email,name,password FROM user WHERE email = ?";
 	
 	static {
 		users = new LinkedHashMap<String, User>();
@@ -34,7 +41,7 @@ public class UserDB {
 		return u.getPassword().equals(password);
 	}
 	
-	public static User getUser(String login) throws DatabaseAccessError {
+	public static User getUser(String login) throws DatabaseAccessError, ClassNotFoundException, SQLException, NamingException {
 		User u = getOwner(login);
 		if(u == null) {
 			u = getEvaluator(login);
@@ -42,11 +49,40 @@ public class UserDB {
 		return u;
 	}
 	
-	public static Owner getOwner(String login) throws DatabaseAccessError{
-		User u = users.get(login);
-		if(u == null || !(u instanceof Owner))
-			return null;
-		return (Owner) u;
+	public static Owner getOwner(String email) throws DatabaseAccessError, ClassNotFoundException, SQLException, NamingException{
+		Connection con = DBUtil.getConnection();
+
+		try {
+			Owner owner = null;
+			PreparedStatement stmt = con.prepareStatement(QUERY);
+			stmt.setString(1, email);
+
+			ResultSet result = stmt.executeQuery();
+
+			if (result.next()) {
+				owner = new Owner();
+				owner.setEmail(result.getString(1));
+				owner.setName(result.getString(2));
+				owner.setPassword(result.getString(3));
+			}
+
+			result.close();
+			stmt.close();
+
+			return owner;
+
+		} finally {
+			try {
+				DBUtil.dropConnection(con);
+			} catch (SQLException e) { /* ignored */
+				e.printStackTrace();
+			}
+		}
+		
+//		User u = users.get(login);
+//		if(u == null || !(u instanceof Owner))
+//			return null;
+//		return (Owner) u;
 	}
 	
 	public static Evaluator getEvaluator(String login) throws DatabaseAccessError {

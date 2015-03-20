@@ -8,6 +8,9 @@ public class Category implements Serializable {
 
 	private String description;
 	
+	public Category() {
+	}
+	
 	public Category(String description) {
 		setDescription(description);
 	}

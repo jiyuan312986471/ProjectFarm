@@ -11,6 +11,9 @@ public abstract class User implements Serializable {
 
 	private String password;
 
+	public User() {
+	}
+	
 	public User(String email, String name, String password) {
 		setEmail(email);
 		setName(name);

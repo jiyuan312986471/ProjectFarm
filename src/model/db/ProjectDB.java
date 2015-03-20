@@ -8,16 +8,19 @@ package model.db;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 import javax.naming.NamingException;
 
+import model.Owner;
 import model.Project;
 import model.db.exception.DatabaseAccessError;
 
 public class ProjectDB {
 
+	private static String QUERY = "SELECT acronym, description, fundingDurationDays, budget, created, emailOwner, category FROM project WHERE acronym = ?";
 	private static String ADD = "INSERT into project (acronym, description, fundingDurationDays, budget, created, emailOwner, category) values (?,?,?,?,?,?,?)";
 	
 	public static void add(Project proj) throws DatabaseAccessError {
@@ -53,6 +56,47 @@ public class ProjectDB {
 			throw new DatabaseAccessError("SQL exception", e);
 		} catch (NamingException e) {
 			throw new DatabaseAccessError("Naming exception", e);
+		} finally {
+			try {
+				DBUtil.dropConnection(con);
+			} catch (SQLException e) { /* ignored */
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public static Project getProjectByAcronym(String acronym) throws Exception {
+
+		Connection con = DBUtil.getConnection();
+
+		try {
+			Project proj = null;
+			PreparedStatement stmt = con.prepareStatement(QUERY);
+			stmt.setString(1, acronym);
+
+			ResultSet result = stmt.executeQuery();
+
+			if (result.next()) {
+
+				// set acronym, description, budget, create date and category
+				proj = new Project();
+				proj.setAcronym(result.getString(1));
+				proj.setDescription(result.getString(2));
+				proj.setBudget(result.getInt(4));
+				proj.setCreated(result.getDate(5));
+				proj.setCategory(result.getString(7));
+				
+				// set owner
+				String emailOwner = result.getString(6);
+				Owner owner = UserDB.getOwner(emailOwner);
+				proj.setOwner(owner);
+			}
+
+			result.close();
+			stmt.close();
+
+			return proj;
+
 		} finally {
 			try {
 				DBUtil.dropConnection(con);

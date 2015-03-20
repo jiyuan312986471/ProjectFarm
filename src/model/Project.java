@@ -21,8 +21,11 @@ public class Project implements Serializable {
 	private List<Evaluation> evaluations;
 	private List<Document> documents;
 
+	public Project() {
+	}
+	
 	public Project(String acronym, String description, //int fundingDuration,
-			int budget, Owner owner, Category category) {
+			int budget, Owner owner, String category) {
 		setAcronym(acronym);
 		setDescription(description);
 		//setFundingDuration(fundingDuration);
@@ -97,8 +100,8 @@ public class Project implements Serializable {
 		return category;
 	}
 
-	public void setCategory(Category category) {
-		this.category = category.getDescription();
+	public void setCategory(String category) {
+		this.category = category;
 	}
 
 	public void addEvaluation(Evaluation eval) {

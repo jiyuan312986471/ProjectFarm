@@ -5,6 +5,11 @@
 <%@ page import="model.Category" %>
 <%@ page import="java.util.LinkedList" %>
 
+<%  if(session.getAttribute("name") == null) {
+		request.getSession().setAttribute("messageError", "Please Login!");
+		request.getRequestDispatcher("/index.jsp").forward(request, response);
+    } else { %>
+
 <jsp:include page="/include/Header.jsp">
 	<jsp:param name="title" value="ProjectFarm"/>
 </jsp:include>
@@ -54,7 +59,7 @@
 				    <label for="inputBudget" class="col-sm-2 control-label">Budget:</label>
 				    <div class="col-sm-4">
 						<div class="input-group">
-						    <input type="text" class="form-control text-right" id="inputBudget" placeholder="Budget" name="projectBudget" value="<%=request.getParameter("projectBudget")==null?"":request.getParameter("projectBudget")%>">
+						    <input type="text" class="form-control text-right" id="inputBudget" placeholder="Budget" name="projectBudget" value="<%= request.getParameter("projectBudget")==null?"":request.getParameter("projectBudget")%>">
 						    <div class="input-group-addon">.00</div>
 						    <div class="input-group-addon">€</div>
 						</div>
@@ -72,3 +77,5 @@
 </div>
 
 <jsp:include page="/include/Footer.jsp" />
+
+<% } %>

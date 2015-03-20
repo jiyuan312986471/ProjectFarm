@@ -58,7 +58,7 @@
 				          		<% if( UserDB.getUser(session.getAttribute("mail").toString()) instanceof Owner ) { %>
 				          			<a href="<%= request.getContextPath()%>/page/MyProjects.jsp">My Projects</a>
 				          		<% } else if ( UserDB.getUser(session.getAttribute("mail").toString()) instanceof Evaluator ) { %>
-				          			<a href="AllProjects">List Projects</a>
+				          			<a href="<%= request.getContextPath()%>/page/AllProjects.jsp">List Projects</a>
 				          		<% } %>
 				          	</li>
 				            <li><a href="<%= request.getContextPath()%>/LogoutServlet">Logout</a></li>

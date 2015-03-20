@@ -8,10 +8,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import model.Category;
 import model.Owner;
 import model.Project;
-import model.db.CategoryDB;
 import model.db.ProjectDB;
 import model.db.exception.DatabaseAccessError;
 
@@ -65,7 +63,13 @@ public class AddProjectIdeaServlet extends HttpServlet {
 		// get values
 		String projTitle = req.getParameter("projectTitle");
 		String projDescription = req.getParameter("projectDescription");
-		Category projCategory = CategoryDB.getCategory(req.getParameter("projectCategory"));
+		String projCategory = req.getParameter("projectCategory");
+//		try {
+//			projCategory = CategoryDB.getCategory(req.getParameter("projectCategory"));
+//		} catch (ClassNotFoundException | SQLException | NamingException e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		}
 		String projBudget = req.getParameter("projectBudget");
 		Owner projOwner = (Owner) req.getSession().getAttribute("User");
 		
@@ -112,8 +116,18 @@ public class AddProjectIdeaServlet extends HttpServlet {
 			e.printStackTrace();
 		}
         
-		// turn to page ProjectDetails.jsp
-		resp.sendRedirect("ProjectDetails.jsp");
+        // remove parameters from request
+        req.removeAttribute("projectTitle");
+        req.removeAttribute("projectDescription");
+        req.removeAttribute("projectCategory");
+        req.removeAttribute("projectBudget");
+        
+        // save project into request
+        req.setAttribute("project", proj);
+        
+		// turn to servlet ProjectDetailsServlet
+        req.getRequestDispatcher("/ProjectDetailsServlet").forward(req, resp);
+		//resp.sendRedirect(req.getContextPath() + "/page/ProjectDetails.jsp");
 	}
 	
 }

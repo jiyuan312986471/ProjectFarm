@@ -1,7 +1,9 @@
 package controller;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
+import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -26,12 +28,6 @@ public class LoginServlet extends HttpServlet {
 		super.destroy();
 		}
 	
-//	// get previous page relative URL
-//	private String getPreviousRelativeURL(String url, HttpServletRequest req) {
-//		String[] list = url.split(req.getContextPath().trim());
-//		return list[list.length - 1];
-//	}
-	
 	
 	// Servlet service
 	protected void service(HttpServletRequest req, HttpServletResponse resp)
@@ -42,9 +38,6 @@ public class LoginServlet extends HttpServlet {
 		
 		// error message setting
 		String messageError = "Invalid Username or Password";
-		
-//		// get previous page relative URL
-//		String previousRelativeURL = this.getPreviousRelativeURL(previousURL, req);
 		
 		try {
 			if ( UserDB.checkLogin(username, password) ) {
@@ -58,8 +51,16 @@ public class LoginServlet extends HttpServlet {
 			}
 		} catch (DatabaseAccessError e1) {
 			req.getSession().setAttribute("messageError", messageError);
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NamingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		} finally {
-			//req.getRequestDispatcher(previousRelativeURL).forward(req, resp);
 			resp.sendRedirect(previousURL);
 		}
 	 }

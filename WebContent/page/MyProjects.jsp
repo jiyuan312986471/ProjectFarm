@@ -1,10 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
-<%  if(session.getAttribute("name") == null) { 
-       RequestDispatcher rd =
-       request.getRequestDispatcher("index.jsp");
-       rd.forward(request, response);
+<%  if(session.getAttribute("name") == null) {
+		request.getSession().setAttribute("messageError", "Please Login!");
+		request.getRequestDispatcher("/index.jsp").forward(request, response);
     } else { %>
 
 <jsp:include page="/include/Header.jsp">
@@ -34,7 +33,7 @@
 			  </thead>
 			  <tbody>
 			    <tr>
-			      <td><a href="show-project.jsp">DIY Autonomous Car</a></td>
+			      <td><a href="ProjectDetails.jsp">DIY Autonomous Car</a></td>
 			      <td>Robotics</td>
 			      <td>100</td>
 			      <td>500.000,00</td>
@@ -43,7 +42,7 @@
 			      <td>42</td>
 			    </tr>
 			    <tr>
-			      <td><a href="show-project.jsp">Drone Delivery</a></td>
+			      <td><a href="ProjectDetails.jsp">Drone Delivery</a></td>
 			      <td>Robotics</td>
 			      <td>55</td>
 			      <td>800.000,00</td>
@@ -52,7 +51,7 @@
 			      <td>34</td>
 			    </tr>
 			    <tr>
-			      <td><a href="show-project.jsp">DIY Smart Home</a></td>
+			      <td><a href="ProjectDetails.jsp">DIY Smart Home</a></td>
 			      <td>App</td>
 			      <td>88</td>
 			      <td>200.000,00</td>
