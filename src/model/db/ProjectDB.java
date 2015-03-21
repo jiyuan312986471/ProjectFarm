@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 import javax.naming.NamingException;
 
@@ -20,9 +21,12 @@ import model.db.exception.DatabaseAccessError;
 
 public class ProjectDB {
 
-	private static String QUERY = "SELECT acronym, description, fundingDurationDays, budget, created, emailOwner, category FROM project WHERE acronym = ?";
+	private static String QUERY_GET_PROJ_BY_PK = "SELECT acronym, description, fundingDurationDays, budget, created, emailOwner, category FROM project WHERE acronym = ?";
+	private static String QUERY_GET_PROJ_LIST_BY_MAIL = "SELECT acronym, description, fundingDurationDays, budget, created, emailOwner, category FROM project WHERE emailOwner = ?";
 	private static String ADD = "INSERT into project (acronym, description, fundingDurationDays, budget, created, emailOwner, category) values (?,?,?,?,?,?,?)";
 	
+	
+	// add project into DB
 	public static void add(Project proj) throws DatabaseAccessError {
 		
 		Connection con = null;
@@ -65,13 +69,15 @@ public class ProjectDB {
 		}
 	}
 	
+	
+	// get project by PK
 	public static Project getProjectByAcronym(String acronym) throws Exception {
 
 		Connection con = DBUtil.getConnection();
 
 		try {
 			Project proj = null;
-			PreparedStatement stmt = con.prepareStatement(QUERY);
+			PreparedStatement stmt = con.prepareStatement(QUERY_GET_PROJ_BY_PK);
 			stmt.setString(1, acronym);
 
 			ResultSet result = stmt.executeQuery();
@@ -104,6 +110,43 @@ public class ProjectDB {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	
+	// get user's projects
+	public static ArrayList<Project> getProjectsOfUser(String email) throws ClassNotFoundException, SQLException, NamingException, DatabaseAccessError {
+		
+		Connection con = DBUtil.getConnection();
+		
+		ArrayList<Project> listProj = new ArrayList<Project>();
+		PreparedStatement stmt = con.prepareStatement(QUERY_GET_PROJ_LIST_BY_MAIL);
+		stmt.setString(1, email);
+		
+		ResultSet result = stmt.executeQuery();
+		
+		while ( result.next() ) {
+			// create project
+			Project proj = new Project();
+			proj.setAcronym(result.getString(1));
+			proj.setDescription(result.getString(2));
+			proj.setBudget(result.getInt(4));
+			proj.setCreated(result.getDate(5));
+			proj.setCategory(result.getString(7));
+			
+			Owner owner = UserDB.getOwner(email);
+			proj.setOwner(owner);
+			
+			// add project into list
+			listProj.add(proj);
+		}
+		
+		result.close();
+		stmt.close();
+		
+		DBUtil.dropConnection(con);
+
+		return listProj;
+		
 	}
 	
 }

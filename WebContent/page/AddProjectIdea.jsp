@@ -24,7 +24,7 @@
             <h4 class="modal-title" id="myModalLabel">New Project Idea</h4>
          </div>
          
-         <form class="form-horizontal" action="<%= request.getContextPath()%>/AddProjectIdeaServlet" method="post">
+         <form class="form-horizontal" action="<%= request.getContextPath()%>/AddProjectIdeaServlet">
 	         <div class="modal-body">
 				  <div class="form-group">
 				    <label for="inputTitle" class="col-sm-2 control-label">Title: </label>

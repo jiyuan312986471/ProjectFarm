@@ -30,13 +30,13 @@
 </head>
 
 
-<body background="<%= request.getContextPath()%>/image/background.jpeg" style="background-repeat:no-repeat; background-size:cover;">
+<body background="<%= request.getContextPath()%>/image/background.jpeg" style="background-repeat:no-repeat; background-size:cover; padding-bottom: 70px;">
 
 	<nav class="navbar navbar-default navbar-inverse" role="navigation">
 	  <div class="container-fluid">
 			  	
 			    <div class="navbar-header">
-			      <a class="navbar-brand" href="<%= request.getContextPath()%>/index.jsp"><%= request.getParameter("title") %></a>
+			      <a class="navbar-brand" href="<% request.removeAttribute("messageError"); %><%= request.getContextPath()%>/index.jsp"><%= request.getParameter("title") %></a>
 			    </div>
 				
 			    <div>
@@ -56,9 +56,9 @@
 				          <ul class="dropdown-menu">
 				          	<li>
 				          		<% if( UserDB.getUser(session.getAttribute("mail").toString()) instanceof Owner ) { %>
-				          			<a href="<%= request.getContextPath()%>/page/MyProjects.jsp">My Projects</a>
+				          			<a href="<% request.removeAttribute("messageError"); %><%= request.getContextPath()%>/MyProjectsServlet">My Projects</a>
 				          		<% } else if ( UserDB.getUser(session.getAttribute("mail").toString()) instanceof Evaluator ) { %>
-				          			<a href="<%= request.getContextPath()%>/page/AllProjects.jsp">List Projects</a>
+				          			<a href="<% request.removeAttribute("messageError"); %><%= request.getContextPath()%>/AllProjectsServlet">List Projects</a>
 				          		<% } %>
 				          	</li>
 				            <li><a href="<%= request.getContextPath()%>/LogoutServlet">Logout</a></li>

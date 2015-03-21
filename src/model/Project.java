@@ -1,6 +1,7 @@
 package model;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -25,10 +26,10 @@ public class Project implements Serializable {
 	}
 	
 	public Project(String acronym, String description, //int fundingDuration,
-			int budget, Owner owner, String category) {
+			int budget, Owner owner, String category) throws InvalidDataException {
 		setAcronym(acronym);
 		setDescription(description);
-		//setFundingDuration(fundingDuration);
+		setFundingDuration(100);
 		setBudget(budget);
 		setCreated(new Date());
 		setOwner(owner);
@@ -41,7 +42,7 @@ public class Project implements Serializable {
 		this.documents = documents;
 	}
 
-	private void setEvaluations(List<Evaluation> evaluations) {
+	public void setEvaluations(List<Evaluation> evaluations) {
 		this.evaluations = evaluations;
 	}
 
@@ -119,6 +120,44 @@ public class Project implements Serializable {
 	
 	public List<Document> getDocuments() {
 		return documents;
+	}
+	
+	// project title check
+	public boolean isValidProjectTitle(String projTitle) {
+		if ( projTitle.equals("") || projTitle == null )
+			return false;
+		else
+			return true;
+	}
+		
+	// project description check
+	public boolean isValidProjectDescription(String projDescription) {
+		if ( projDescription.equals("") || projDescription == null )
+			return false;
+		else
+			return true;
+	}
+	
+	// project budget check
+	public boolean isValidProjectBudget(String projBudget) {
+		if ( projBudget.equals("") || projBudget == null ) {
+			return false;
+		} else {
+			try {
+				Integer.parseUnsignedInt(projBudget);
+			} catch (NumberFormatException e) {
+				return false;
+			}
+			return true;
+		}
+	}
+	
+	// display budget
+	public String toStringBudget() {
+		DecimalFormat df = new DecimalFormat(",###");
+		String strBudget = df.format(this.budget);
+		strBudget = strBudget.replace(",", ".");
+		return strBudget;
 	}
 
 }

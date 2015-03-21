@@ -44,7 +44,7 @@ public class LoginServlet extends HttpServlet {
 				req.getSession().removeAttribute("messageError");
 				req.getSession().setAttribute("mail", UserDB.getUser(username).getEmail());
 				req.getSession().setAttribute("name", UserDB.getUser(username).getName());
-				req.getSession().setAttribute("User", UserDB.getOwner(username));
+				req.getSession().setAttribute("User", UserDB.getUser(username));
 			}
 			else {
 				req.getSession().setAttribute("messageError", messageError);
