@@ -35,17 +35,17 @@ public class ProjectDetailsServlet extends HttpServlet {
 		
 		// detect the referer page
 		String referer = req.getHeader("referer");
-//		String ref = null;
-//		try {
-//			String[] str = referer.split("?");
-//			ref = str[0];
-//		} catch (Exception e) {
-//			ref = referer;
-//		} finally {
+		String ref = null;
+		try {
+			String[] str = referer.split("?");
+			ref = str[0];
+		} catch (Exception e) {
+			ref = referer;
+		} finally {
 			
 			// get project info from DB
 			Project proj = null;
-			if ( referer.equals(refAddProjectIdea) ) {
+			if ( ref.equals(refAddProjectIdea) ) {
 				// referer: AddProjectIdea
 				try {
 					// prepare proj title
@@ -55,7 +55,7 @@ public class ProjectDetailsServlet extends HttpServlet {
 					e.printStackTrace();
 				}
 			}
-			else if ( referer.equals(refMyProjects) ) {
+			else if ( ref.equals(refMyProjects) ) {
 				// referer: MyProjects
 				try {
 					// prepare proj title
@@ -71,7 +71,7 @@ public class ProjectDetailsServlet extends HttpServlet {
 			
 			// Turn to Page ProjectDetails
 			req.getRequestDispatcher("/page/ProjectDetails.jsp").forward(req, resp);
-//		}
+		}
 	}
 
 }

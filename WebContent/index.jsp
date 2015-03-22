@@ -1,11 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="model.db.UserDB" %>
+<%@ page import="model.User" %>
 <%@ page import="model.Owner" %>
 
 <jsp:include page="/include/Header.jsp">
 	<jsp:param name="title" value="ProjectFarm"/>
 	<jsp:param name="page" value="/index.jsp" />
 </jsp:include>
+
 
 <div class="container">
 

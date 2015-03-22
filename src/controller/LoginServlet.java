@@ -52,13 +52,10 @@ public class LoginServlet extends HttpServlet {
 		} catch (DatabaseAccessError e1) {
 			req.getSession().setAttribute("messageError", messageError);
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (NamingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			resp.sendRedirect(previousURL);

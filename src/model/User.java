@@ -2,14 +2,14 @@ package model;
 
 import java.io.Serializable;
 
-public abstract class User implements Serializable {
+public class User implements Serializable {
 
 	private static final long serialVersionUID = -5822209320482420372L;
 
 	private String email;
 	private String name;
-
 	private String password;
+	private int userType;
 
 	public User() {
 	}
@@ -42,6 +42,14 @@ public abstract class User implements Serializable {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	
+	public int getUserType() {
+		return userType;
+	}
+	
+	public void setUserType(int userType) {
+		this.userType = userType;
 	}
 
 	@Override

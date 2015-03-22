@@ -11,7 +11,6 @@
 </jsp:include>
 
 <%  Project proj = (Project) request.getAttribute("project"); %>
-<%  System.out.println(proj); %>
 
 <div class="container">
 
