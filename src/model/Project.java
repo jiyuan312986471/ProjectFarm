@@ -2,7 +2,7 @@ package model;
 
 import java.io.Serializable;
 import java.text.DecimalFormat;
-import java.util.Date;
+import java.sql.Timestamp;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -16,7 +16,7 @@ public class Project implements Serializable {
 	private String description;
 	private int fundingDuration;
 	private int budget;
-	private Date created;
+	private Timestamp created;
 	private Owner owner;
 	private String category;
 	private List<Evaluation> evaluations;
@@ -31,7 +31,7 @@ public class Project implements Serializable {
 		setDescription(description);
 		setFundingDuration(100);
 		setBudget(budget);
-		setCreated(new Date());
+		setCreated(new Timestamp(System.currentTimeMillis()));
 		setOwner(owner);
 		setCategory(category);
 		setEvaluations(new LinkedList<Evaluation>());
@@ -81,11 +81,11 @@ public class Project implements Serializable {
 		this.budget = budget;
 	}
 
-	public Date getCreated() {
+	public Timestamp getCreated() {
 		return created;
 	}
 
-	public void setCreated(Date created) {
+	public void setCreated(Timestamp created) {
 		this.created = created;
 	}
 

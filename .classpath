@@ -11,6 +11,5 @@
 			<attribute name="owner.project.facets" value="java"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="E:/Lernen/ESIGELEC/2eme annee/J2EE_Fuckner/JEECourse/ProjectFarm/commons-fileupload-1.2.1.jar"/>
-	<classpathentry kind="output" path="build/classes"/>
+	<classpathentry kind="output" path="WebContent/WEB-INF/classes"/>
 </classpath>

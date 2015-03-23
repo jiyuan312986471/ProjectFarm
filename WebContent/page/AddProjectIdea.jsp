@@ -60,7 +60,7 @@
 				    <div class="col-sm-4">
 						<div class="input-group">
 						    <input type="text" class="form-control text-right" id="inputBudget" placeholder="Budget" name="projectBudget" value="<%= request.getParameter("projectBudget")==null?"":request.getParameter("projectBudget")%>">
-						    <div class="input-group-addon">.00</div>
+						    <div class="input-group-addon">,00</div>
 						    <div class="input-group-addon">€</div>
 						</div>
 					</div>

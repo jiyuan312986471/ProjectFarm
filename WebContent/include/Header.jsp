@@ -55,9 +55,9 @@
 				          </a>
 				          <ul class="dropdown-menu">
 				          	<li>
-				          		<% if( UserDB.getUser(session.getAttribute("mail").toString()) instanceof Owner ) { %>
+				          		<% if( UserDB.getUser(session.getAttribute("mail").toString()).getUserType() == 0 ) { %>
 				          			<a href="<% request.removeAttribute("messageError"); %><%= request.getContextPath()%>/MyProjectsServlet">My Projects</a>
-				          		<% } else if ( UserDB.getUser(session.getAttribute("mail").toString()) instanceof Evaluator ) { %>
+				          		<% } else if ( UserDB.getUser(session.getAttribute("mail").toString()).getUserType() == 1 ) { %>
 				          			<a href="<% request.removeAttribute("messageError"); %><%= request.getContextPath()%>/AllProjectsServlet">List Projects</a>
 				          		<% } %>
 				          	</li>

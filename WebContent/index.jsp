@@ -17,7 +17,7 @@
 		<p>
 			<% if ( session.getAttribute("mail") == null ) { %>
 				<a class="btn btn-primary btn-lg" href="<%= request.getContextPath()%>/page/LearnMore.jsp" role="button">Learn more</a>
-			<% } else if ( UserDB.getUser(session.getAttribute("mail").toString()) instanceof Owner ) { %>
+			<% } else if ( UserDB.getUser(session.getAttribute("mail").toString()).getUserType() == 0 ) { %>
 				<a class="btn btn-primary btn-lg" href="<%= request.getContextPath()%>/page/AddProjectIdea.jsp" role="button">New project idea</a>
 			<% } else { %>
 				<a class="btn btn-primary btn-lg" href="<%= request.getContextPath()%>/page/LearnMore.jsp" role="button">Learn more</a>

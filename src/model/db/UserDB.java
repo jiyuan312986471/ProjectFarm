@@ -42,52 +42,56 @@ public class UserDB {
 	}
 	
 	public static User getUser(String email) throws DatabaseAccessError, ClassNotFoundException, SQLException, NamingException {
-//		Connection con = DBUtil.getConnection();
-//
-//		try {
-//			User user = null;
-//			PreparedStatement stmt = con.prepareStatement(QUERY);
-//			stmt.setString(1, email);
-//
-//			ResultSet result = stmt.executeQuery();
-//
-//			if (result.next()) {
-//				user = new User();
-//				user.setEmail(result.getString(1));
-//				user.setName(result.getString(2));
-//				user.setPassword(result.getString(3));
-//				user.setUserType(result.getInt(4));
-//			}
-//
-//			result.close();
-//			stmt.close();
-//
-//			return user;
-//
-//		} finally {
-//			try {
-//				DBUtil.dropConnection(con);
-//			} catch (SQLException e) { /* ignored */
-//				e.printStackTrace();
-//			}
-//		}
-		
-		User u = getOwner(email);
-		if(u == null) {
-			u = getEvaluator(email);
+		Connection con = DBUtil.getConnection();
+
+		try {
+			User user = null;
+			PreparedStatement stmt = con.prepareStatement(QUERY);
+			stmt.setString(1, email);
+
+			ResultSet result = stmt.executeQuery();
+
+			if (result.next()) {
+				user = new User();
+				user.setEmail(result.getString(1));
+				user.setName(result.getString(2));
+				user.setPassword(result.getString(3));
+				user.setUserType(result.getInt(4));
+			}
+
+			result.close();
+			stmt.close();
+
+			return user;
+
+		} finally {
+			try {
+				DBUtil.dropConnection(con);
+			} catch (SQLException e) { /* ignored */
+				e.printStackTrace();
+			}
 		}
-		return u;
+		
+//		User u = getOwner(email);
+//		if(u == null) {
+//			u = getEvaluator(email);
+//		}
+//		return u;
 	}
 	
 	public static Owner getOwner(String email) throws DatabaseAccessError, ClassNotFoundException, SQLException, NamingException{
-//		User u = getUser(email);
-//		if( u.getUserType() == 0) {
-//			Owner owner = (Owner) u;
-//			return owner;
-//		}
-//		else {
-//			return null;
-//		}
+		User u = getUser(email);
+		if( u.getUserType() == 0 ) {
+			Owner owner = new Owner();
+			owner.setEmail(u.getEmail());
+			owner.setName(u.getName());
+			owner.setPassword(u.getPassword());
+			owner.setUserType(u.getUserType());
+			return owner;
+		}
+		else {
+			return null;
+		}
 		
 //		Connection con = DBUtil.getConnection();
 //
@@ -119,21 +123,25 @@ public class UserDB {
 //			}
 //		}
 		
-		User u = users.get(email);
-		if(u == null || !(u instanceof Owner))
-			return null;
-		return (Owner) u;
+//		User u = users.get(email);
+//		if(u == null || !(u instanceof Owner))
+//			return null;
+//		return (Owner) u;
 	}
 	
 	public static Evaluator getEvaluator(String email) throws DatabaseAccessError, ClassNotFoundException, SQLException, NamingException {
-//		User u = getUser(email);
-//		if( u.getUserType() == 1) {
-//			Evaluator eva = (Evaluator) u;
-//			return eva;
-//		}
-//		else {
-//			return null;
-//		}
+		User u = getUser(email);
+		if( u.getUserType() == 1 ) {
+			Evaluator eva = new Evaluator();
+			eva.setEmail(u.getEmail());
+			eva.setName(u.getName());
+			eva.setPassword(u.getPassword());
+			eva.setUserType(u.getUserType());
+			return eva;
+		}
+		else {
+			return null;
+		}
 		
 //		Connection con = DBUtil.getConnection();
 //
@@ -165,9 +173,9 @@ public class UserDB {
 //			}
 //		}
 		
-		User u = users.get(email);
-		if(u == null || !(u instanceof Evaluator))
-			return null;
-		return (Evaluator) u;		
+//		User u = users.get(email);
+//		if(u == null || !(u instanceof Evaluator))
+//			return null;
+//		return (Evaluator) u;		
 	}
 }

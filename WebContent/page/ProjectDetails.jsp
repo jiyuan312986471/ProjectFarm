@@ -33,7 +33,7 @@
 						<label class="col-sm-1 col-sm-offset-1">Acronym: </label>
 						<label class="col-sm-3"><%= proj.getAcronym() %></label>
 						<label class="col-sm-1 col-sm-offset-1">Created: </label>
-						<label class="col-sm-2"><%= proj.getCreated().toString() %></label>
+						<label class="col-sm-3"><%= proj.getCreated().toGMTString() %></label>
 					</div>
 				</div>
 					
@@ -51,8 +51,8 @@
 						<label class="col-sm-1 col-md-offset-3">Budget:</label>
 						<div class="col-sm-3">
 							<div class="input-group">
-								<input type="text" class="form-control text-left" id="disabledInput" placeholder="Budget" value="<%= proj.getBudget() %>" disabled>
-								<div class="input-group-addon">.00</div>
+								<input type="text" class="form-control text-right" id="disabledInput" placeholder="Budget" value="<%= proj.toStringBudget() %>" disabled>
+								<div class="input-group-addon">,00</div>
 								<div class="input-group-addon">€</div>
 							</div>
 						</div>
@@ -115,7 +115,7 @@
 			</div>
 	         
 		    <div class="modal-footer">
-		    	<input type="submit" class="btn btn-primary">Save
+		    	<input type="submit" class="btn btn-primary" value="Save">
 		    </div>
 	    </form>
       </div>

@@ -1,7 +1,7 @@
 package controller;
 
 import java.io.IOException;
-import java.util.Date;
+import java.sql.Timestamp;
 import java.util.LinkedList;
 
 import javax.servlet.ServletException;
@@ -14,6 +14,7 @@ import model.Document;
 import model.Evaluation;
 import model.Owner;
 import model.Project;
+import model.User;
 import model.db.ProjectDB;
 import model.db.exception.DatabaseAccessError;
 import model.exception.InvalidDataException;
@@ -43,7 +44,14 @@ public class AddProjectIdeaServlet extends HttpServlet {
 		String projDescription = req.getParameter("projectDescription");
 		String projCategory = req.getParameter("projectCategory");
 		String projBudget = req.getParameter("projectBudget");
-		Owner projOwner = (Owner) req.getSession().getAttribute("User");
+		
+		// get owner
+		User u = (User) req.getSession().getAttribute("User");
+		Owner projOwner = new Owner();
+		projOwner.setEmail(u.getEmail());
+		projOwner.setName(u.getName());
+		projOwner.setPassword(u.getPassword());
+		projOwner.setUserType(u.getUserType());
 		
 		// error message setting
 		String errorBudget = "Invalid Budget";
@@ -87,7 +95,7 @@ public class AddProjectIdeaServlet extends HttpServlet {
 			proj.setDescription(projDescription);
 			proj.setFundingDuration(100);
 			proj.setBudget(budget);
-			proj.setCreated(new Date());
+			proj.setCreated(new Timestamp(System.currentTimeMillis()));
 			proj.setOwner(projOwner);
 			proj.setCategory(projCategory);
 			proj.setEvaluations(new LinkedList<Evaluation>());

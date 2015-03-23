@@ -89,7 +89,7 @@ public class ProjectDB {
 				proj.setAcronym(result.getString(1));
 				proj.setDescription(result.getString(2));
 				proj.setBudget(result.getInt(4));
-				proj.setCreated(result.getDate(5));
+				proj.setCreated(result.getTimestamp(5));
 				proj.setCategory(result.getString(7));
 				
 				// set owner
@@ -130,7 +130,7 @@ public class ProjectDB {
 			proj.setAcronym(result.getString(1));
 			proj.setDescription(result.getString(2));
 			proj.setBudget(result.getInt(4));
-			proj.setCreated(result.getDate(5));
+			proj.setCreated(result.getTimestamp(5));
 			proj.setCategory(result.getString(7));
 			
 			Owner owner = UserDB.getOwner(email);
