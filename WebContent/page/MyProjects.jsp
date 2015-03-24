@@ -27,13 +27,13 @@
 				
 				  <thead>
 				    <tr>
-				      <th>Acronym</th>
-				      <th>Category</th>
-				      <th>Number of incubation days</th>
-				      <th>Budget</th>
-				      <th>Risk Level</th>
-				      <th>Attractiveness</th>
-				      <th>Number of evaluators</th>
+				      <th><p></p><p class="text-center">Acronym</p></th>
+				      <th><p></p><p class="text-center">Category</p></th>
+				      <th><p></p><p class="text-center">Number of incubation days</p></th>
+				      <th><p></p><p class="text-center">Budget</p></th>
+				      <th><p></p><p class="text-center">Risk Level</p></th>
+				      <th><p></p><p class="text-center">Attractiveness</p></th>
+				      <th><p></p><p class="text-center">Number of evaluators</p></th>
 				    </tr>
 				  </thead>
 				  

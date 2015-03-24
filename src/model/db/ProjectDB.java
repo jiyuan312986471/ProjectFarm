@@ -1,16 +1,11 @@
 package model.db;
 
-//import java.util.LinkedHashMap;
-//import java.util.LinkedList;
-//import java.util.List;
-//import java.util.Map;
-
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import javax.naming.NamingException;
@@ -20,7 +15,7 @@ import model.Project;
 import model.db.exception.DatabaseAccessError;
 
 public class ProjectDB {
-
+	private static String QUERY_GET_PROJECTS = "SELECT acronym, description, fundingDurationDays, budget, created, emailOwner, category FROM project";
 	private static String QUERY_GET_PROJ_BY_PK = "SELECT acronym, description, fundingDurationDays, budget, created, emailOwner, category FROM project WHERE acronym = ?";
 	private static String QUERY_GET_PROJ_LIST_BY_MAIL = "SELECT acronym, description, fundingDurationDays, budget, created, emailOwner, category FROM project WHERE emailOwner = ?";
 	private static String ADD = "INSERT into project (acronym, description, fundingDurationDays, budget, created, emailOwner, category) values (?,?,?,?,?,?,?)";
@@ -36,15 +31,15 @@ public class ProjectDB {
 			con = DBUtil.getConnection();
 			
 			// get date
-			java.sql.Date date = new Date( new java.util.Date().getTime() );
+			Timestamp date = new Timestamp(System.currentTimeMillis());
 			
 			// statement
 			PreparedStatement stmt = con.prepareStatement(ADD, Statement.RETURN_GENERATED_KEYS);
 			stmt.setString(1, proj.getAcronym());
 			stmt.setString(2, proj.getDescription());
-			stmt.setInt(3, 0);
+			stmt.setInt(3, 100);
 			stmt.setInt(4, proj.getBudget());
-			stmt.setDate(5, date);
+			stmt.setTimestamp(5, date);
 			stmt.setString(6, proj.getOwner().getEmail());
 			stmt.setString(7, proj.getCategory());
 
@@ -145,8 +140,41 @@ public class ProjectDB {
 		
 		DBUtil.dropConnection(con);
 
-		return listProj;
+		return listProj;		
+	}
+	
+	
+	// get all projects
+	public static ArrayList<Project> getAllProjects() throws ClassNotFoundException, SQLException, NamingException, DatabaseAccessError {
+		Connection con = DBUtil.getConnection();
 		
+		ArrayList<Project> listProj = new ArrayList<Project>();
+		Statement stmt = con.createStatement();
+		
+		ResultSet result = stmt.executeQuery(QUERY_GET_PROJECTS);
+		
+		while ( result.next() ) {
+			// create project
+			Project proj = new Project();
+			proj.setAcronym(result.getString(1));
+			proj.setDescription(result.getString(2));
+			proj.setBudget(result.getInt(4));
+			proj.setCreated(result.getTimestamp(5));
+			proj.setCategory(result.getString(7));
+			
+			Owner owner = UserDB.getOwner(result.getString(6));
+			proj.setOwner(owner);
+			
+			// add project into list
+			listProj.add(proj);
+		}
+		
+		result.close();
+		stmt.close();
+		
+		DBUtil.dropConnection(con);
+
+		return listProj;		
 	}
 	
 }

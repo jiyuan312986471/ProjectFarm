@@ -28,10 +28,10 @@ public class ProjectDetailsServlet extends HttpServlet {
 	// Servlet Service
 	public void service(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		
 		// referers
 		String refAddProjectIdea = "http://" + req.getServerName() + ":8080" + req.getContextPath() + "/page/AddProjectIdea.jsp";
 		String refMyProjects = "http://" + req.getServerName() + ":8080" + req.getContextPath() + "/MyProjectsServlet";
+		String refAllProjects = "http://" + req.getServerName() + ":8080" + req.getContextPath() + "/AllProjectsServlet";
 		
 		// detect the referer page
 		String referer = req.getHeader("referer");
@@ -57,6 +57,16 @@ public class ProjectDetailsServlet extends HttpServlet {
 			}
 			else if ( ref.equals(refMyProjects) ) {
 				// referer: MyProjects
+				try {
+					// prepare proj title
+					String projTitle = req.getParameter("acronym");
+					proj = ProjectDB.getProjectByAcronym(projTitle);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			else if ( ref.equals(refAllProjects) ) {
+				// referer: AllProjects
 				try {
 					// prepare proj title
 					String projTitle = req.getParameter("acronym");

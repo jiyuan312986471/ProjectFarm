@@ -13,8 +13,10 @@ public class Evaluation implements Serializable {
 	private int attractiveness;
 	private int riskLevel;
 
-	public Evaluation(Evaluator evaluator, int attractiveness,
-			int riskLevel) throws InvalidDataException {
+	public Evaluation() {
+	}
+	
+	public Evaluation(Evaluator evaluator, int attractiveness, int riskLevel) throws InvalidDataException {
 		setEvaluator(evaluator);
 		setAttractiveness(attractiveness);
 		setRiskLevel(riskLevel);
