@@ -34,11 +34,17 @@ public class UserDB {
 		users.put("george@geek.com",new Evaluator("george@geek.com","George Papalodeminus","456"));		
 	}
 	
-	public static boolean checkLogin(String login,String password) throws DatabaseAccessError{
-		User u = users.get(login);
-		if(u == null) 
+	public static boolean checkLogin(String email,String password) throws DatabaseAccessError, ClassNotFoundException, SQLException, NamingException{
+		User u = getUser(email);
+		if ( u == null ) {
 			return false;
+		}
 		return u.getPassword().equals(password);
+		
+//		User u = users.get(login);
+//		if(u == null) 
+//			return false;
+//		return u.getPassword().equals(password);
 	}
 	
 	public static User getUser(String email) throws DatabaseAccessError, ClassNotFoundException, SQLException, NamingException {

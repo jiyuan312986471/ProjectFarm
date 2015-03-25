@@ -27,7 +27,8 @@ public class AddDocumentServlet extends HttpServlet {
 		// get document
 		
 		
-		
+		// turn to ProjectDetailsServlet
+		req.getRequestDispatcher("/ProjectDetailsServlet").forward(req, resp);
 	}
 
 }

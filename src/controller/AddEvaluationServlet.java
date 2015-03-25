@@ -43,6 +43,7 @@ public class AddEvaluationServlet extends HttpServlet {
 		
 		// get proj acronym
 		String acronym = req.getSession().getAttribute("projectTitle").toString();
+		req.getSession().removeAttribute("projectTitle");
 		
 		// get evaluation
 		String risk = req.getParameter("riskLevel").toString();
@@ -89,15 +90,18 @@ public class AddEvaluationServlet extends HttpServlet {
 			
 			// store into DB
 			EvaluationDB.add(eva);
+			
 		} catch (ClassNotFoundException | InvalidDataException | DatabaseAccessError | SQLException | NamingException e1) {
 			e1.printStackTrace();
 		}
+		
+		req.setAttribute("projectTitle", acronym);
 		
 		
 		/*****************************************
 		 * 		      REDIRECTION
 		 *****************************************/
-		resp.sendRedirect("AllProjectsServlet");
+		req.getRequestDispatcher("ProjectDetailsServlet").forward(req, resp);
 		
 	}
 }
