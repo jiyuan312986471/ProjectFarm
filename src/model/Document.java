@@ -2,7 +2,7 @@ package model;
 
 import java.io.File;
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Timestamp;
 
 import model.exception.InvalidDataException;
 
@@ -11,11 +11,16 @@ public class Document implements Serializable {
 	private static final long serialVersionUID = 3404763898326246494L;
 	
 	private String documentPath;
-	private Date added;
+	private Timestamp added;
+	private Project project;
 	
-	public Document(String documentPath) throws InvalidDataException {
+	public Document() {
+	}
+	
+	public Document(String documentPath, Project project) throws InvalidDataException {
 		setDocumentPath(documentPath);
-		setAdded(new Date());
+		setAdded(new Timestamp(System.currentTimeMillis()));
+		setProject(project);
 	}
 
 	public String getDocumentPath() {
@@ -23,25 +28,33 @@ public class Document implements Serializable {
 	}
 
 	public void setDocumentPath(String documentPath) throws InvalidDataException {
-		File file = new File(documentPath);
-		
-		if(!file.exists()) {
-			throw new InvalidDataException("File " + documentPath + " does not exists");
-		}
-		
-		if(!file.isFile()) {
-			throw new InvalidDataException("Path " + documentPath + " does not point to a file");
-		}
+//		File file = new File(documentPath);
+//		
+//		if(!file.exists()) {
+//			throw new InvalidDataException("File " + documentPath + " does not exists");
+//		}
+//		
+//		if(!file.isFile()) {
+//			throw new InvalidDataException("Path " + documentPath + " does not point to a file");
+//		}
 		
 		this.documentPath = documentPath;
 	}
 
-	public Date getAdded() {
+	public Timestamp getAdded() {
 		return added;
 	}
 
-	public void setAdded(Date added) {
+	public void setAdded(Timestamp added) {
 		this.added = added;
+	}
+	
+	public Project getProject() {
+		return project;
+	}
+	
+	public void setProject(Project project) {
+		this.project = project;
 	}
 
 }

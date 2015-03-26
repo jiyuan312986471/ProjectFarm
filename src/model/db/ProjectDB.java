@@ -110,7 +110,6 @@ public class ProjectDB {
 	
 	// get user's projects
 	public static ArrayList<Project> getProjectsOfUser(String email) throws ClassNotFoundException, SQLException, NamingException, DatabaseAccessError {
-		
 		Connection con = DBUtil.getConnection();
 		
 		ArrayList<Project> listProj = new ArrayList<Project>();

@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -8,7 +9,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import model.Document;
 import model.Project;
+import model.db.DocumentDB;
 import model.db.EvaluationDB;
 import model.db.ProjectDB;
 
@@ -34,6 +37,8 @@ public class ProjectDetailsServlet extends HttpServlet {
 		String refMyProjects = "http://" + req.getServerName() + ":8080" + req.getContextPath() + "/MyProjectsServlet";
 		String refAllProjects = "http://" + req.getServerName() + ":8080" + req.getContextPath() + "/AllProjectsServlet";
 		String refAddEvaluation = "http://" + req.getServerName() + ":8080" + req.getContextPath() + "/EvaluationPageServlet";
+		String refAddDocument = "http://" + req.getServerName() + ":8080" + req.getContextPath() + "/ProjectDetailsServlet";
+		String refAddDocument2 = "http://" + req.getServerName() + ":8080" + req.getContextPath() + "/AddDocumentServlet";
 		
 		// detect the referer page
 		String referer = req.getHeader("referer");
@@ -45,11 +50,11 @@ public class ProjectDetailsServlet extends HttpServlet {
 			ref = referer;
 		} finally {
 			
-			
 			// get info from DB
 			Project proj = null;
 			float riskLevel = 0, attractiveness = 0;
 			int nbOfEva = 0;
+			ArrayList<Document> listDoc = null;
 			
 			if ( ref.equals(refAddProjectIdea) ) {
 				// referer: AddProjectIdea
@@ -68,6 +73,9 @@ public class ProjectDetailsServlet extends HttpServlet {
 					String projTitle = req.getParameter("acronym");
 					proj = ProjectDB.getProjectByAcronym(projTitle);
 					
+					// prepare documents
+					listDoc = DocumentDB.getDocsOfProject(projTitle);
+					
 					// prepare evaluations
 					riskLevel = EvaluationDB.getAvgRiskLvl(projTitle);
 					attractiveness = EvaluationDB.getAvgAttract(projTitle);
@@ -76,14 +84,15 @@ public class ProjectDetailsServlet extends HttpServlet {
 					e.printStackTrace();
 				}
 			}
-			else if ( ref.equals(refAddEvaluation) ) {
-				// referer: AddEvaluation
+			else if ( ref.equals(refAddEvaluation) || ref.equals(refAddDocument) || ref.equals(refAddDocument2) ) {
+				// referer: AddEvaluation & AddDocument
 				try {
 					// prepare project
 					String projTitle = req.getAttribute("projectTitle").toString();
-					System.out.println(projTitle);
 					proj = ProjectDB.getProjectByAcronym(projTitle);
-					System.out.println(proj);
+					
+					// prepare documents
+					listDoc = DocumentDB.getDocsOfProject(projTitle);
 					
 					// prepare evaluations
 					riskLevel = EvaluationDB.getAvgRiskLvl(projTitle);
@@ -97,6 +106,7 @@ public class ProjectDetailsServlet extends HttpServlet {
 			
 			// save info into request
 			req.setAttribute("project", proj);
+			req.setAttribute("listDoc", listDoc);
 			req.setAttribute("riskLevel", riskLevel);
 			req.setAttribute("attractiveness", attractiveness);
 			req.setAttribute("nbOfEva", nbOfEva);
