@@ -44,7 +44,7 @@
 					%>
 				  		<tr>
 				  			<td>
-				  				<a href="<%= request.getContextPath()%>/ProjectDetailsServlet?acronym=<%= proj.getAcronym() %>"><%= proj.getAcronym() %></a>
+				  				<a href="<% session.removeAttribute("messageError"); %><%= request.getContextPath()%>/ProjectDetailsServlet?acronym=<%= proj.getAcronym() %>"><%= proj.getAcronym() %></a>
 				  			</td>
 				      		<td><%= proj.getCategory() %></td>
 				      		<td><%= proj.getFundingDuration() %></td>

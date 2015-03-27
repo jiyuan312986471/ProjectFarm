@@ -16,6 +16,8 @@ public class EvaluationPageServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 3904354408714250812L;
 	
+	private static String msgErrorLogin = "Please login";
+	
 	public EvaluationPageServlet() {
 		super();
 	}
@@ -26,21 +28,26 @@ public class EvaluationPageServlet extends HttpServlet {
 	
 	// Servlet Service
 	public void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// get project info from DB
-		Project proj = null;
-		String projTitle = req.getParameter("acronym");
-		try {
-			proj = ProjectDB.getProjectByAcronym(projTitle);
-		} catch (Exception e) {
-			e.printStackTrace();
+		if ( req.getSession().getAttribute("mail") == null ) {
+			req.getSession().setAttribute("messageError", msgErrorLogin);
+			resp.sendRedirect("index.jsp");
 		}
-		
-		// save project into request
-		req.setAttribute("project", proj);
-					
-		// Turn to Page ProjectDetails
-		req.getRequestDispatcher("/page/Evaluate.jsp").forward(req, resp);
-		
+		else {
+			// get project info from DB
+			Project proj = null;
+			String projTitle = req.getParameter("acronym");
+			try {
+				proj = ProjectDB.getProjectByAcronym(projTitle);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			// save project into request
+			req.setAttribute("project", proj);
+						
+			// Turn to Page ProjectDetails
+			req.getRequestDispatcher("/page/Evaluate.jsp").forward(req, resp);
+		}
 	}
 
 }

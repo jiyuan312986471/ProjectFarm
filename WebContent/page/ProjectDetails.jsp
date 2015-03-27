@@ -71,7 +71,7 @@
 		
 		<% if ( UserDB.getUser(session.getAttribute("mail").toString()).getUserType() == 0 ) { %>
 			<%  session.setAttribute("acronym", proj.getAcronym()); %>
-			<form action="<%= request.getContextPath()%>/AddDocumentServlet" enctype="multipart/form-data" method="post" id="file">
+			<form action="<%= request.getContextPath()%>/AddDocumentServlet" enctype="multipart/form-data" method="post">
 				<div class="modal-body">
 					<div class="form-group">
 						<div class="row">
@@ -80,15 +80,16 @@
 					 		<label class="col-sm-2" style="color:red;">Only PDF file allowed</label>
 					 	</div>
 				 	</div>
-				 	
-				 	<% for ( Document doc: listDoc) { %>
-				 		<% String[] split = doc.getDocumentPath().split("/"); %>
-				 		<% String docName = split[split.length - 1]; %>
-						<div class="form-group">
-							<div class="row">
-								<a href="" class="col-sm-6 col-sm-offset-1"><%= docName %></a>
+				 	<% if ( listDoc != null && listDoc.size() > 0 ) { %>
+					 	<% for ( Document doc: listDoc) { %>
+					 		<% String[] split = doc.getDocumentPath().split("\\\\"); %>
+					 		<% String docName = split[split.length - 1]; %>
+							<div class="form-group">
+								<div class="row">
+									<a href="<% session.removeAttribute("messageError"); %><%= request.getContextPath()%>/OpenFileServlet?name=<%= docName %>&acronym=<%= proj.getAcronym() %>" class="col-sm-6 col-sm-offset-1"><%= docName %></a>
+								</div>
 							</div>
-						</div>
+						<% } %>
 					<% } %>
 				</div>
 				
@@ -185,15 +186,16 @@
 					 		<label class="col-sm-2"><h4>Documents</h4></label>
 					 	</div>
 				 	</div>
-				 	
-					<% for ( Document doc: listDoc) { %>
-				 		<% String[] split = doc.getDocumentPath().split("/"); %>
-				 		<% String docName = split[split.length - 1]; %>
-						<div class="form-group">
-							<div class="row">
-								<a href="" class="col-sm-6 col-sm-offset-1"><%= docName %></a>
+				 	<% if ( listDoc != null && listDoc.size() > 0 ) { %>
+						<% for ( Document doc: listDoc) { %>
+					 		<% String[] split = doc.getDocumentPath().split("\\\\"); %>
+					 		<% String docName = split[split.length - 1]; %>
+							<div class="form-group">
+								<div class="row">
+									<a href="<% session.removeAttribute("messageError"); %><%= request.getContextPath()%>/OpenFileServlet?name=<%= docName %>&acronym=<%= proj.getAcronym() %>" class="col-sm-6 col-sm-offset-1"><%= docName %></a>
+								</div>
 							</div>
-						</div>
+						<% } %>
 					<% } %>
 				</div>
 				
@@ -294,24 +296,8 @@
 
 <%  } %>
 
-<script language="javascript" type="text/javascript">
+<script type="text/javascript">
 $(document).ready(function() {
-    $('.progress .progress-bar').progressbar({
-//     	update: function(current_percentage, $this) {
-//             $this.css('background-color', 'rgb(' + Math.round(current_percentage / 100 * 255) + ', 0, 0)');
-//     	},
-    	display_text: 'fill'
-    });
-});
-
-function check_file() {
-    var fileName = document.getElementById("file").value; 
-
-    var file_suffix = fileName.substr(fileName.length-3);
-    
-    if(file_suffix != "pdf"){  
-        alert("Only PDF allowed");  
-        return false;  
-    }  
-}  
+    $('.progress .progress-bar').progressbar({ display_text: 'fill' });
+}); 
 </script>

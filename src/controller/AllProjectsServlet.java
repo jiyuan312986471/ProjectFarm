@@ -19,6 +19,8 @@ import model.db.exception.DatabaseAccessError;
 public class AllProjectsServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 8859370956703894061L;
+	
+	private static String msgErrorLogin = "Please login";
 
 	public AllProjectsServlet() {
 		super();
@@ -30,19 +32,25 @@ public class AllProjectsServlet extends HttpServlet {
 
 	// Servlet Service
 	public void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// get all projects
-		ArrayList<Project> listProj = null;
-		try {
-			listProj = ProjectDB.getAllProjects();
-		} catch (ClassNotFoundException | SQLException | NamingException | DatabaseAccessError e) {
-			e.printStackTrace();
+		if ( req.getSession().getAttribute("mail") == null ) {
+			req.getSession().setAttribute("messageError", msgErrorLogin);
+			resp.sendRedirect("index.jsp");
 		}
-
-		// set list into request
-		req.setAttribute("listProj", listProj);
-
-		// Turn to Page MyProjects
-		req.getRequestDispatcher("/page/AllProjects.jsp").forward(req, resp);
+		else {
+			// get all projects
+			ArrayList<Project> listProj = null;
+			try {
+				listProj = ProjectDB.getAllProjects();
+			} catch (ClassNotFoundException | SQLException | NamingException | DatabaseAccessError e) {
+				e.printStackTrace();
+			}
+	
+			// set list into request
+			req.setAttribute("listProj", listProj);
+	
+			// Turn to Page MyProjects
+			req.getRequestDispatcher("/page/AllProjects.jsp").forward(req, resp);
+		}
 	}
 
 }

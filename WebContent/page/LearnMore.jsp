@@ -11,7 +11,7 @@
 		<h1>Project Farm</h1>
 		<p>
 			<p>Simplified version of KickStarter project aiming at helping people to get funding for project ideas in several fields.</p></br></br>
-			<a class="btn btn-primary btn-lg" href="<%= request.getContextPath()%>/index.jsp" role="button">Back</a>
+			<a class="btn btn-primary btn-lg" href="<% session.removeAttribute("messageError"); %><%= request.getContextPath()%>/index.jsp" role="button">Back</a>
 		</p> 
 	</div>
 

@@ -20,6 +20,8 @@ public class MyProjectsServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 8546268582055981926L;
 	
+	private static String msgErrorLogin = "Please login";
+	
 	public MyProjectsServlet() {
 		super();
 	}
@@ -29,25 +31,30 @@ public class MyProjectsServlet extends HttpServlet {
 	}
 	
 	// Servlet Service
-	public void service(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-		// get user
-		String mail = req.getSession().getAttribute("mail").toString();
-		
-		// get all projects belong to the user
-		ArrayList<Project> listProj = null;
-		try {
-			listProj = ProjectDB.getProjectsOfUser(mail);
-		} catch (ClassNotFoundException | SQLException | NamingException
-				| DatabaseAccessError e) {
-			e.printStackTrace();
+	public void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		if ( req.getSession().getAttribute("mail") == null ) {
+			req.getSession().setAttribute("messageError", msgErrorLogin);
+			resp.sendRedirect("index.jsp");
 		}
-		
-		// set list into request
-		req.setAttribute("listProj", listProj);
-		
-		// Turn to Page MyProjects
-		req.getRequestDispatcher("/page/MyProjects.jsp").forward(req, resp);
+		else {
+			// get user
+			String mail = req.getSession().getAttribute("mail").toString();
+			
+			// get all projects belong to the user
+			ArrayList<Project> listProj = null;
+			try {
+				listProj = ProjectDB.getProjectsOfUser(mail);
+			} catch (ClassNotFoundException | SQLException | NamingException
+					| DatabaseAccessError e) {
+				e.printStackTrace();
+			}
+			
+			// set list into request
+			req.setAttribute("listProj", listProj);
+			
+			// Turn to Page MyProjects
+			req.getRequestDispatcher("/page/MyProjects.jsp").forward(req, resp);
+		}
 	}
 
 }
