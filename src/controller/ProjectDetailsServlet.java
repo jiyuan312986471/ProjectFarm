@@ -38,87 +38,58 @@ public class ProjectDetailsServlet extends HttpServlet {
 			resp.sendRedirect("index.jsp");
 		}
 		else {
-			// referers
-			String refAddProjectIdea = "http://" + req.getServerName() + ":8080" + req.getContextPath() + "/page/AddProjectIdea.jsp";
-			String refMyProjects = "http://" + req.getServerName() + ":8080" + req.getContextPath() + "/MyProjectsServlet";
-			String refAllProjects = "http://" + req.getServerName() + ":8080" + req.getContextPath() + "/AllProjectsServlet";
-			String refAddEvaluation = "http://" + req.getServerName() + ":8080" + req.getContextPath() + "/EvaluationPageServlet";
-			String refAddDocument = "http://" + req.getServerName() + ":8080" + req.getContextPath() + "/ProjectDetailsServlet";
-			String refAddDocument2 = "http://" + req.getServerName() + ":8080" + req.getContextPath() + "/AddDocumentServlet";
-			
-			// detect the referer page
-			String referer = req.getHeader("referer");
-			String ref = null;
+			// prepare project
+			String projTitle = null;
 			try {
-				String[] str = referer.split("\\?");
-				ref = str[0];
+				projTitle = req.getParameter("acronym").toString();
+			} catch (NullPointerException e) {
+				try {
+					projTitle = req.getParameter("projectTitle").toString();
+				} catch (NullPointerException e1) {
+					try {
+						projTitle = req.getAttribute("projectTitle").toString();
+					} catch (NullPointerException e2) {
+						try {
+							projTitle = req.getSession().getAttribute("acronym").toString();
+						} catch (Exception e3) {
+							e3.printStackTrace();
+						}
+					}
+				}
+			}
+			
+			// get info from DB
+			Project proj = null;
+			float riskLevel = 0, attractiveness = 0;
+			int nbOfEva = 0;
+			ArrayList<Document> listDoc = null;
+			
+			try {
+				proj = ProjectDB.getProjectByAcronym(projTitle);
+	
+				// prepare documents
+				listDoc = DocumentDB.getDocsOfProject(projTitle);
+	
+				// prepare evaluations
+				riskLevel = EvaluationDB.getAvgRiskLvl(projTitle);
+				attractiveness = EvaluationDB.getAvgAttract(projTitle);
+				nbOfEva = EvaluationDB.getNbOfEva(projTitle);
 			} catch (Exception e) {
-				ref = referer;
-			} finally {
+				e.printStackTrace();
+			}
 				
-				// get info from DB
-				Project proj = null;
-				float riskLevel = 0, attractiveness = 0;
-				int nbOfEva = 0;
-				ArrayList<Document> listDoc = null;
-				
-				if ( ref.equals(refAddProjectIdea) ) {
-					// referer: AddProjectIdea
-					try {
-						// prepare project
-						String projTitle = req.getAttribute("projectTitle").toString();
-						proj = ProjectDB.getProjectByAcronym(projTitle);
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
-				else if ( ref.equals(refMyProjects) || ref.equals(refAllProjects) ) {
-					// referer: MyProjects & AllProjects
-					try {
-						// prepare project
-						String projTitle = req.getParameter("acronym");
-						proj = ProjectDB.getProjectByAcronym(projTitle);
-						
-						// prepare documents
-						listDoc = DocumentDB.getDocsOfProject(projTitle);
-						
-						// prepare evaluations
-						riskLevel = EvaluationDB.getAvgRiskLvl(projTitle);
-						attractiveness = EvaluationDB.getAvgAttract(projTitle);
-						nbOfEva = EvaluationDB.getNbOfEva(projTitle);
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
-				else if ( ref.equals(refAddEvaluation) || ref.equals(refAddDocument) || ref.equals(refAddDocument2) ) {
-					// referer: AddEvaluation & AddDocument
-					try {
-						// prepare project
-						String projTitle = req.getAttribute("projectTitle").toString();
-						proj = ProjectDB.getProjectByAcronym(projTitle);
-						
-						// prepare documents
-						listDoc = DocumentDB.getDocsOfProject(projTitle);
-						
-						// prepare evaluations
-						riskLevel = EvaluationDB.getAvgRiskLvl(projTitle);
-						attractiveness = EvaluationDB.getAvgAttract(projTitle);
-						nbOfEva = EvaluationDB.getNbOfEva(projTitle);
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
-				
-				// save info into request
-				req.setAttribute("project", proj);
+			// save info into request
+			req.setAttribute("project", proj);
+			req.getSession().setAttribute("acronym", proj.getAcronym());
+			if (listDoc != null)
 				req.setAttribute("listDoc", listDoc);
-				req.setAttribute("riskLevel", riskLevel);
-				req.setAttribute("attractiveness", attractiveness);
-				req.setAttribute("nbOfEva", nbOfEva);
-				
-				// Turn to Page ProjectDetails
-				req.getRequestDispatcher("/page/ProjectDetails.jsp").forward(req, resp);
-			}// end finally
-		}
+			req.setAttribute("riskLevel", riskLevel);
+			req.setAttribute("attractiveness", attractiveness);
+			req.setAttribute("nbOfEva", nbOfEva);
+
+			// Turn to Page ProjectDetails
+			req.getRequestDispatcher("/page/ProjectDetails.jsp").forward(req, resp);
+			
+		}// end else
 	}// service
 }

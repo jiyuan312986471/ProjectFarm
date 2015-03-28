@@ -32,20 +32,18 @@
 				    <th><p></p><p class="text-center">Number of incubation days</p></th>
 				    <th><p></p><p class="text-center">Budget</p></th>
 				    <th><p></p><p class="text-center">Number of evaluations</p></th>
-				    <th><p></p><p class="text-center">Action</p></th>
 				</tr>
 				</thead>
 				<tbody>
 				<% for ( Project proj: listProj ) { %>
 					<tr>
 				  		<td>
-				  			<a href="<% session.removeAttribute("messageError"); %><%= request.getContextPath()%>/ProjectDetailsServlet?acronym=<%= proj.getAcronym() %>"><%= proj.getAcronym() %></a>
+				  			<a href="<%= request.getContextPath()%>/ProjectDetailsServlet?acronym=<%= proj.getAcronym() %>"><%= proj.getAcronym() %></a>
 				  		</td>
 				    	<td><%= proj.getCategory() %></td>
 				    	<td><%= proj.getFundingDuration() %></td>
 				    	<td><%= proj.toStringBudget() %>,00</td>
 				    	<td><%= EvaluationDB.getNbOfEva(proj.getAcronym()) %></td>
-				    	<td><a href="<% session.removeAttribute("messageError"); %><%= request.getContextPath()%>/EvaluationPageServlet?acronym=<%= proj.getAcronym() %>">Evaluate</a></td>
 				  	</tr>
 				<% } %>
 				</tbody>

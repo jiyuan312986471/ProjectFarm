@@ -54,7 +54,6 @@ public class AddDocumentServlet extends HttpServlet {
 			 * 				FILE STORAGE
 			 ***********************************************/
 			String acronym = req.getSession().getAttribute("acronym").toString();
-			req.getSession().removeAttribute("acronym");
 			
 			String path = uploadPath + acronym + "\\";
 			 
@@ -113,9 +112,6 @@ public class AddDocumentServlet extends HttpServlet {
 			 * 				   MAP IN DB
 			 ***********************************************/
 	        if ( validFile ) {
-		        // remove error msg
-		        req.getSession().removeAttribute("messageError");
-		        
 		        try {
 		        	// get project
 		            Project proj = null;
@@ -136,12 +132,14 @@ public class AddDocumentServlet extends HttpServlet {
 				}
 	        }
 		    req.setAttribute("projectTitle", acronym);
+		    req.getSession().setAttribute("acronym", acronym);
 	        
 	        
 	        /***********************************************
 			 * 				 REDIRECTION
 			 ***********************************************/
 			req.getRequestDispatcher("/ProjectDetailsServlet").forward(req, resp);
+			req.getSession().removeAttribute("messageError");
 		}
 	}
 

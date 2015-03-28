@@ -3,6 +3,7 @@ package model;
 import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -14,7 +15,6 @@ public class Project implements Serializable {
 
 	private String acronym;
 	private String description;
-	private int fundingDuration;
 	private int budget;
 	private Timestamp created;
 	private Owner owner;
@@ -25,11 +25,9 @@ public class Project implements Serializable {
 	public Project() {
 	}
 	
-	public Project(String acronym, String description, //int fundingDuration,
-			int budget, Owner owner, String category) throws InvalidDataException {
+	public Project(String acronym, String description, int budget, Owner owner, String category) throws InvalidDataException {
 		setAcronym(acronym);
 		setDescription(description);
-		setFundingDuration(100);
 		setBudget(budget);
 		setCreated(new Timestamp(System.currentTimeMillis()));
 		setOwner(owner);
@@ -63,14 +61,10 @@ public class Project implements Serializable {
 	}
 
 	public int getFundingDuration() {
-		return fundingDuration;
-	}
-
-	public void setFundingDuration(int fundingDuration) throws InvalidDataException {
-		if(fundingDuration <= 0) {
-			throw new InvalidDataException("Funding must be specified");
-		}				
-		this.fundingDuration = fundingDuration;
+		Long todayInMillis = (new Date()).getTime();
+		Long createdInMillis = created.getTime();
+		int days = (int) ((todayInMillis - createdInMillis) / (1000*60*60*24));
+		return days;
 	}
 
 	public int getBudget() {

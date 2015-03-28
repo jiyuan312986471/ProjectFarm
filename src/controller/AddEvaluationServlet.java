@@ -67,12 +67,12 @@ public class AddEvaluationServlet extends HttpServlet {
 			if ( risk.equals("Please choose...") ) {
 				req.setAttribute("project", proj);
 				req.getSession().setAttribute("messageError", errorRiskLevel);
-				req.getRequestDispatcher("/page/Evaluate.jsp").forward(req, resp);
+				req.getRequestDispatcher("/ProjectDetailsServlet").forward(req, resp);
 			}
 			else if ( attract.equals("Please choose...") ) {
 				req.setAttribute("project", proj);
 				req.getSession().setAttribute("messageError", errorAttractiveness);
-				req.getRequestDispatcher("/page/Evaluate.jsp").forward(req, resp);
+				req.getRequestDispatcher("/ProjectDetailsServlet").forward(req, resp);
 			}
 			
 			
@@ -80,7 +80,7 @@ public class AddEvaluationServlet extends HttpServlet {
 			 * 		   IF ALL GOES WELL
 			 *****************************************/
 			// remove error message
-			req.removeAttribute("messageError");
+			req.getSession().removeAttribute("messageError");
 			
 			try {
 				// get values in integer

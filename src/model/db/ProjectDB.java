@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import javax.naming.NamingException;
@@ -15,33 +14,27 @@ import model.Project;
 import model.db.exception.DatabaseAccessError;
 
 public class ProjectDB {
-	private static String QUERY_GET_PROJECTS = "SELECT acronym, description, fundingDurationDays, budget, created, emailOwner, category FROM project";
-	private static String QUERY_GET_PROJ_BY_PK = "SELECT acronym, description, fundingDurationDays, budget, created, emailOwner, category FROM project WHERE acronym = ?";
-	private static String QUERY_GET_PROJ_LIST_BY_MAIL = "SELECT acronym, description, fundingDurationDays, budget, created, emailOwner, category FROM project WHERE emailOwner = ?";
-	private static String ADD = "INSERT into project (acronym, description, fundingDurationDays, budget, created, emailOwner, category) values (?,?,?,?,?,?,?)";
+	private static String QUERY_GET_PROJECTS = "SELECT acronym, description, budget, created, emailOwner, category FROM project";
+	private static String QUERY_GET_PROJ_BY_PK = "SELECT acronym, description, budget, created, emailOwner, category FROM project WHERE acronym = ?";
+	private static String QUERY_GET_PROJ_LIST_BY_MAIL = "SELECT acronym, description, budget, created, emailOwner, category FROM project WHERE emailOwner = ?";
+	private static String ADD = "INSERT into project (acronym, description, budget, created, emailOwner, category) values (?,?,?,?,?,?)";
 	
 	
 	// add project into DB
 	public static void add(Project proj) throws DatabaseAccessError {
-		
 		Connection con = null;
 		try {
-			
 			// connection
 			con = DBUtil.getConnection();
-			
-			// get date
-			Timestamp date = new Timestamp(System.currentTimeMillis());
 			
 			// statement
 			PreparedStatement stmt = con.prepareStatement(ADD, Statement.RETURN_GENERATED_KEYS);
 			stmt.setString(1, proj.getAcronym());
 			stmt.setString(2, proj.getDescription());
-			stmt.setInt(3, 100);
-			stmt.setInt(4, proj.getBudget());
-			stmt.setTimestamp(5, date);
-			stmt.setString(6, proj.getOwner().getEmail());
-			stmt.setString(7, proj.getCategory());
+			stmt.setInt(3, proj.getBudget());
+			stmt.setTimestamp(4, proj.getCreated());
+			stmt.setString(5, proj.getOwner().getEmail());
+			stmt.setString(6, proj.getCategory());
 
 			int lines = stmt.executeUpdate();
 
@@ -67,7 +60,6 @@ public class ProjectDB {
 	
 	// get project by PK
 	public static Project getProjectByAcronym(String acronym) throws Exception {
-
 		Connection con = DBUtil.getConnection();
 
 		try {
@@ -83,12 +75,12 @@ public class ProjectDB {
 				proj = new Project();
 				proj.setAcronym(result.getString(1));
 				proj.setDescription(result.getString(2));
-				proj.setBudget(result.getInt(4));
-				proj.setCreated(result.getTimestamp(5));
-				proj.setCategory(result.getString(7));
+				proj.setBudget(result.getInt(3));
+				proj.setCreated(result.getTimestamp(4));
+				proj.setCategory(result.getString(6));
 				
 				// set owner
-				String emailOwner = result.getString(6);
+				String emailOwner = result.getString(5);
 				Owner owner = UserDB.getOwner(emailOwner);
 				proj.setOwner(owner);
 			}
@@ -123,9 +115,9 @@ public class ProjectDB {
 			Project proj = new Project();
 			proj.setAcronym(result.getString(1));
 			proj.setDescription(result.getString(2));
-			proj.setBudget(result.getInt(4));
-			proj.setCreated(result.getTimestamp(5));
-			proj.setCategory(result.getString(7));
+			proj.setBudget(result.getInt(3));
+			proj.setCreated(result.getTimestamp(4));
+			proj.setCategory(result.getString(6));
 			
 			Owner owner = UserDB.getOwner(email);
 			proj.setOwner(owner);
@@ -157,11 +149,11 @@ public class ProjectDB {
 			Project proj = new Project();
 			proj.setAcronym(result.getString(1));
 			proj.setDescription(result.getString(2));
-			proj.setBudget(result.getInt(4));
-			proj.setCreated(result.getTimestamp(5));
-			proj.setCategory(result.getString(7));
+			proj.setBudget(result.getInt(3));
+			proj.setCreated(result.getTimestamp(4));
+			proj.setCategory(result.getString(6));
 			
-			Owner owner = UserDB.getOwner(result.getString(6));
+			Owner owner = UserDB.getOwner(result.getString(5));
 			proj.setOwner(owner);
 			
 			// add project into list

@@ -39,7 +39,7 @@
 	  <div class="container-fluid">
 			  	
 			    <div class="navbar-header">
-			      <a class="navbar-brand" href="<% session.removeAttribute("messageError"); %><%= request.getContextPath()%>/index.jsp"><%= request.getParameter("title") %></a>
+			      <a class="navbar-brand" href="<%= request.getContextPath()%>/index.jsp"><%= request.getParameter("title") %></a>
 			    </div>
 				
 			    <div>
@@ -59,12 +59,12 @@
 				          <ul class="dropdown-menu">
 				          	<li>
 				          		<% if( UserDB.getUser(session.getAttribute("mail").toString()).getUserType() == 0 ) { %>
-				          			<a href="<% session.removeAttribute("messageError"); %><% request.removeAttribute("messageError"); %><%= request.getContextPath()%>/MyProjectsServlet">My Projects</a>
+				          			<a href="<%= request.getContextPath()%>/MyProjectsServlet">My Projects</a>
 				          		<% } else if ( UserDB.getUser(session.getAttribute("mail").toString()).getUserType() == 1 ) { %>
-				          			<a href="<% session.removeAttribute("messageError"); %><%= request.getContextPath()%>/AllProjectsServlet">List Projects</a>
+				          			<a href="<%= request.getContextPath()%>/AllProjectsServlet">List Projects</a>
 				          		<% } %>
 				          	</li>
-				            <li><a href="<% session.removeAttribute("messageError"); %><%= request.getContextPath()%>/LogoutServlet">Logout</a></li>
+				            <li><a href="<%= request.getContextPath()%>/LogoutServlet">Logout</a></li>
 				          </ul>
 				        </li>
 			        </ul>			

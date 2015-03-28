@@ -34,23 +34,27 @@ public class LoginServlet extends HttpServlet {
 			throws ServletException, IOException {
 		String username = req.getParameter("username");
 		String password = req.getParameter("password");
-		String previousURL = req.getHeader("referer");
+		//String previousURL = req.getHeader("referer");
+		
 		
 		// error message setting
 		String messageError = "Invalid Username or Password";
 		
 		try {
 			if ( UserDB.checkLogin(username, password) ) {
-				req.getSession().removeAttribute("messageError");
 				req.getSession().setAttribute("mail", UserDB.getUser(username).getEmail());
 				req.getSession().setAttribute("name", UserDB.getUser(username).getName());
 				req.getSession().setAttribute("User", UserDB.getUser(username));
+				req.getRequestDispatcher("/index.jsp").forward(req, resp);
+				//resp.sendRedirect(previousURL);
 			}
 			else {
 				req.getSession().setAttribute("messageError", messageError);
+				req.getRequestDispatcher("/index.jsp").forward(req, resp);
 			}
 		} catch (DatabaseAccessError e1) {
 			req.getSession().setAttribute("messageError", messageError);
+			req.getRequestDispatcher("/index.jsp").forward(req, resp);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
@@ -58,7 +62,7 @@ public class LoginServlet extends HttpServlet {
 		} catch (NamingException e) {
 			e.printStackTrace();
 		} finally {
-			resp.sendRedirect(previousURL);
+			req.getSession().removeAttribute("messageError");
 		}
 	 }
 

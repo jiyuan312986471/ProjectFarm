@@ -17,7 +17,6 @@ import model.Project;
 import model.User;
 import model.db.ProjectDB;
 import model.db.exception.DatabaseAccessError;
-import model.exception.InvalidDataException;
 
 
 @WebServlet("/AddProjectIdeaServlet")
@@ -37,21 +36,18 @@ public class AddProjectIdeaServlet extends HttpServlet {
 		super.destroy();
 		}
 	
-	
-	
 	// Servlet Service
-	protected void service(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
+	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		if ( req.getSession().getAttribute("mail") == null ) {
 			req.getSession().setAttribute("messageError", msgErrorLogin);
 			resp.sendRedirect("index.jsp");
 		}
 		else {
 			// get values
-			String projTitle = req.getParameter("projectTitle");
-			String projDescription = req.getParameter("projectDescription");
-			String projCategory = req.getParameter("projectCategory");
-			String projBudget = req.getParameter("projectBudget");
+			String projTitle = req.getParameter("projectTitle").toString();
+			String projDescription = req.getParameter("projectDescription").toString();
+			String projCategory = req.getParameter("projectCategory").toString();
+			String projBudget = req.getParameter("projectBudget").toString();
 			
 			// get owner
 			User u = (User) req.getSession().getAttribute("User");
@@ -73,44 +69,37 @@ public class AddProjectIdeaServlet extends HttpServlet {
 	        if ( !proj.isValidProjectTitle(projTitle) ) {
 	        	req.getSession().setAttribute("messageError", errorTitle);
 				req.getRequestDispatcher("/page/AddProjectIdea.jsp").forward(req, resp);
+				req.getSession().removeAttribute("messageError");
 	        }
 	        
 	        // description check
 	        else if ( !proj.isValidProjectDescription(projDescription) ) {
 	            req.getSession().setAttribute("messageError", errorDescription);
 	    		req.getRequestDispatcher("/page/AddProjectIdea.jsp").forward(req, resp);
+	    		req.getSession().removeAttribute("messageError");
 	        }
 	        
 			// budget check
 	        else if ( !proj.isValidProjectBudget(projBudget) ) {
 	        	req.getSession().setAttribute("messageError", errorBudget);
 				req.getRequestDispatcher("/page/AddProjectIdea.jsp").forward(req, resp);
+				req.getSession().removeAttribute("messageError");
 	        }
-	        
 	        
 	        
 	        /**************************************************
 	         * 				IF ALL GOES WELL
 	         **************************************************/
-	        // remove error message
-	        req.getSession().removeAttribute("messageError");
-	        
 	        // generate project
 	        int budget = Integer.parseUnsignedInt(projBudget);
-			try {
-				//proj = new Project(projTitle, projDescription, budget, projOwner, projCategory);
-				proj.setAcronym(projTitle);
-				proj.setDescription(projDescription);
-				proj.setFundingDuration(100);
-				proj.setBudget(budget);
-				proj.setCreated(new Timestamp(System.currentTimeMillis()));
-				proj.setOwner(projOwner);
-				proj.setCategory(projCategory);
-				proj.setEvaluations(new LinkedList<Evaluation>());
-				proj.setDocuments(new LinkedList<Document>());
-			} catch (InvalidDataException e1) {
-				e1.printStackTrace();
-			}
+			proj.setAcronym(projTitle);
+			proj.setDescription(projDescription);
+			proj.setBudget(budget);
+			proj.setCreated(new Timestamp(System.currentTimeMillis()));
+			proj.setOwner(projOwner);
+			proj.setCategory(projCategory);
+			proj.setEvaluations(new LinkedList<Evaluation>());
+			proj.setDocuments(new LinkedList<Document>());
 	
 	        // save project to DB
 	        try {
@@ -119,6 +108,7 @@ public class AddProjectIdeaServlet extends HttpServlet {
 				// if add failed
 				req.getSession().setAttribute("messageError", errorAdd);
 				req.getRequestDispatcher("/page/AddProjectIdea.jsp").forward(req, resp);
+				req.getSession().removeAttribute("messageError");
 			}
 	        
 	        // remove parameters from request
@@ -132,6 +122,7 @@ public class AddProjectIdeaServlet extends HttpServlet {
 	        
 			// turn to servlet ProjectDetailsServlet
 	        req.getRequestDispatcher("/ProjectDetailsServlet").forward(req, resp);
+	        req.getSession().removeAttribute("messageError");
 		}
 	}
 	

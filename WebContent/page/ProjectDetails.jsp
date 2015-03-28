@@ -1,7 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="model.Project" %>
 <%@ page import="model.Document" %>
+<%@ page import="model.Evaluation" %>
 <%@ page import="model.db.UserDB" %>
+<%@ page import="model.db.EvaluationDB" %>
 <%@ page import="java.lang.*" %>
 <%@ page import="java.util.ArrayList" %>
 
@@ -19,6 +21,16 @@
 <%  float riskLvl = Float.parseFloat(request.getAttribute("riskLevel").toString()); %>
 <%  float attract = Float.parseFloat(request.getAttribute("attractiveness").toString()); %>
 <%  int nbOfEva = Integer.parseInt(request.getAttribute("nbOfEva").toString()); %>
+<%  boolean isEvaExists = EvaluationDB.isEvaExists(proj.getAcronym(), session.getAttribute("mail").toString()); %>
+
+<%
+	float riskLvlUser = 0, attractUser = 0;
+	if ( isEvaExists ){
+		Evaluation eva = EvaluationDB.getEvaluation(proj.getAcronym(), session.getAttribute("mail").toString());
+		riskLvlUser = eva.getRiskLevel();
+		attractUser = eva.getAttractiveness();
+	}
+%>
 
 <div class="container">
 
@@ -70,7 +82,6 @@
 			<hr>
 		
 		<% if ( UserDB.getUser(session.getAttribute("mail").toString()).getUserType() == 0 ) { %>
-			<%  session.setAttribute("acronym", proj.getAcronym()); %>
 			<form action="<%= request.getContextPath()%>/AddDocumentServlet" enctype="multipart/form-data" method="post">
 				<div class="modal-body">
 					<div class="form-group">
@@ -86,7 +97,7 @@
 					 		<% String docName = split[split.length - 1]; %>
 							<div class="form-group">
 								<div class="row">
-									<a href="<% session.removeAttribute("messageError"); %><%= request.getContextPath()%>/OpenFileServlet?name=<%= docName %>&acronym=<%= proj.getAcronym() %>" class="col-sm-6 col-sm-offset-1"><%= docName %></a>
+									<a href="<%= request.getContextPath()%>/OpenFileServlet?name=<%= docName %>&acronym=<%= proj.getAcronym() %>" class="col-sm-6 col-sm-offset-1"><%= docName %></a>
 								</div>
 							</div>
 						<% } %>
@@ -99,6 +110,13 @@
 					<div class="form-group">
 						<div class="row">
 							<label class="col-sm-2"><h4>Statistics</h4></label>
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<div class="row">
+							<label class="col-sm-3 col-sm-offset-1">Number of Evaluations: </label>
+							<label class="col-sm-1"><%= nbOfEva %></label>
 						</div>
 					</div>
 					
@@ -165,13 +183,6 @@
 							<% } %>
 						</div>
 					</div>
-					
-					<div class="form-group">
-						<div class="row">
-							<label class="col-sm-3 col-sm-offset-1">Number of Evaluations: </label>
-							<label class="col-sm-1"><%= nbOfEva %></label>
-						</div>
-					</div>
 				</div>
 		         
 			    <div class="modal-footer">
@@ -179,7 +190,6 @@
 			    </div>
 		    </form>
 	    <% } else { %>
-	    	<form action="<%= request.getContextPath()%>/AllProjectsServlet" method="post">
 				<div class="modal-body">
 					<div class="form-group">
 						<div class="row">
@@ -201,10 +211,18 @@
 				
 				<hr>
 				
+			<form action="<%= request.getContextPath()%>/AddEvaluationServlet" method="post">
 				<div class="modal-body">
 					<div class="form-group">
 						<div class="row">
-							<label class="col-sm-2"><h4>Statistics</h4></label>
+							<label class="col-sm-2"><h4>Statistics</h4></label>	
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<div class="row">
+							<label class="col-sm-3 col-sm-offset-1">Number of Evaluations: </label>
+							<label class="col-sm-1"><%= nbOfEva %></label>
 						</div>
 					</div>
 					
@@ -273,17 +291,104 @@
 							<% } %>
 						</div>
 					</div>
+				</div>
+				
+				<hr>
+				
+				<div class="modal-body">
+					<div class="form-group">
+						<div class="row">
+							<label class="col-sm-2"><h4>Your Evaluation</h4></label>
+						</div>
+					</div>
 					
 					<div class="form-group">
 						<div class="row">
-							<label class="col-sm-3 col-sm-offset-1">Number of Evaluations: </label>
-							<label class="col-sm-1"><%= nbOfEva %></label>
+							<label for="inputRiskLevel" class="col-sm-3 col-sm-offset-1">Risk Level: </label>
+							<% if ( riskLvlUser == 0 ) { %>
+								<div class="col-sm-2">
+									<select class="form-control" id="inputRiskLevel" name="riskLevel">
+										<option selected="selected">Please choose...</option>
+										<option>1</option>
+										<option>2</option>
+										<option>3</option>
+										<option>4</option>
+										<option>5</option>
+									</select>
+								</div>
+							<% } else { %>
+								<div class="col-sm-7">
+									<div class="progress">
+		    							<div class="progress">
+		    							<div 
+		    								class="progress-bar
+			    							<% if ( riskLvlUser < 2.3) { %>
+						      					progress-bar-success
+						      				<% } else if ( riskLvlUser < 3.7 ) { %>
+						      					progress-bar-warning
+						      				<% } else { %>
+						      					progress-bar-danger
+						      				<% } %>"
+						      				
+			    							data-transitiongoal="
+			    							<% if ( riskLvlUser != 1) { %>
+			    								<%= (riskLvlUser - 1) * 25 %>
+			    							<% } else { %>
+			    								<%= 1 %>
+			    							<% } %>"
+			    							style="min-width: 2em;">
+		    							</div>
+									</div>
+									</div>
+								</div>
+							<% } %>
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<div class="row">
+							<label for="inputAttractiveness" class="col-sm-3 col-sm-offset-1">Attractiveness: </label>
+							<% if ( attractUser == 0 ) { %>
+								<div class="col-sm-2">
+									<select class="form-control" id="inputAttractiveness" name="attractiveness">
+										<option selected="selected">Please choose...</option>
+										<option>1</option>
+										<option>2</option>
+										<option>3</option>
+										<option>4</option>
+										<option>5</option>
+									</select>
+								</div>
+							<% } else { %>
+								<div class="col-sm-7">
+									<div class="progress">
+		    							<div 
+		    								class="progress-bar
+			    							<% if ( attractUser < 2.3) { %>
+						      					progress-bar-danger
+						      				<% } else if ( attractUser < 3.7 ) { %>
+						      					progress-bar-warning
+						      				<% } else { %>
+						      					progress-bar-success
+						      				<% } %>"
+						      				
+			    							data-transitiongoal="
+			    							<% if ( attractUser != 1) { %>
+			    								<%= (attractUser - 1) * 25 %>
+			    							<% } else { %>
+			    								<%= 1 %>
+			    							<% } %>"
+			    							style="min-width: 2em;">
+		    							</div>
+									</div>
+								</div>
+							<% } %>
 						</div>
 					</div>
 				</div>
 		         
 			    <div class="modal-footer">
-			    	<input type="submit" class="btn btn-primary" value="Back">
+			    	<input type="submit" class="btn btn-primary" value="Save">
 			    </div>
 		    </form>
 	    <% } %>
@@ -293,6 +398,8 @@
 </div>
 
 <jsp:include page="/include/Footer.jsp" />
+
+<%  request.getSession().setAttribute("projectTitle", proj.getAcronym()); %>
 
 <%  } %>
 
