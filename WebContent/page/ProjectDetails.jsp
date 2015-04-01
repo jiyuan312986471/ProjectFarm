@@ -66,8 +66,8 @@
 				<div class="form-group">
 					<div class="row">
 						<label class="col-sm-1 col-sm-offset-1">Category: </label>
-						<label class="col-sm-1"><%= proj.getCategory() %></label>
-						<label class="col-sm-1 col-md-offset-4">Budget:</label>
+						<label class="col-sm-2"><%= proj.getCategory() %></label>
+						<label class="col-sm-1 col-md-offset-3">Budget:</label>
 						<div class="col-sm-3">
 							<div class="input-group">
 								<input type="text" class="form-control text-right" id="disabledInput" placeholder="Budget" value="<%= proj.toStringBudget() %>" disabled>

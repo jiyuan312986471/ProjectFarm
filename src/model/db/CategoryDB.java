@@ -16,7 +16,7 @@ import model.db.exception.DatabaseAccessError;
 public class CategoryDB {
 	
 	private static Map<String,Category> categories;
-	private static String QUERY = "SELECT description FROM category WHERE description = ?";
+//	private static String QUERY = "SELECT description FROM category WHERE description = ?";
 	
 	static {
 		categories = new LinkedHashMap<>();
@@ -27,35 +27,34 @@ public class CategoryDB {
 		return new LinkedList<Category>(categories.values());
 	}
 	
-	public static Category getCategory(String description) throws ClassNotFoundException, SQLException, NamingException {
-		Connection con = DBUtil.getConnection();
-
-		try {
-			Category cat = null;
-			PreparedStatement stmt = con.prepareStatement(QUERY);
-			stmt.setString(1, description);
-
-			ResultSet result = stmt.executeQuery();
-
-			if (result.next()) {
-				cat = new Category();
-				cat.setDescription(result.getString("description"));
-			}
-
-			result.close();
-			stmt.close();
-
-			return cat;
-
-		} finally {
-			try {
-				DBUtil.dropConnection(con);
-			} catch (SQLException e) { /* ignored */
-				e.printStackTrace();
-			}
-		}
-//		return categories.get(name);
-	}
+//	public static Category getCategory(String description) throws ClassNotFoundException, SQLException, NamingException {
+//		Connection con = DBUtil.getConnection();
+//
+//		try {
+//			Category cat = null;
+//			PreparedStatement stmt = con.prepareStatement(QUERY);
+//			stmt.setString(1, description);
+//
+//			ResultSet result = stmt.executeQuery();
+//
+//			if (result.next()) {
+//				cat = new Category();
+//				cat.setDescription(result.getString("description"));
+//			}
+//
+//			result.close();
+//			stmt.close();
+//
+//			return cat;
+//
+//		} finally {
+//			try {
+//				DBUtil.dropConnection(con);
+//			} catch (SQLException e) { /* ignored */
+//				e.printStackTrace();
+//			}
+//		}
+//	}
 
 	private static void initializeCategoryList() {
 		categories.put("Apps",new Category("Apps"));
